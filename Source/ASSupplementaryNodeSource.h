@@ -7,9 +7,9 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <Foundation/Foundation.h>
 #import <AsyncDisplayKit/ASBlockTypes.h>
 #import <AsyncDisplayKit/ASDimension.h>
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -25,7 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @return A node block for the supplementary element.
  * @see collectionNode:nodeForSupplementaryElementOfKind:atIndexPath:
  */
-- (ASCellNodeBlock)nodeBlockForSupplementaryElementOfKind:(NSString *)elementKind atIndex:(NSInteger)index;
+- (ASCellNodeBlock)nodeBlockForSupplementaryElementOfKind:(NSString *)elementKind
+                                                  atIndex:(NSInteger)index;
 
 /**
  * Asks the controller to provide a node to display for the given supplementary element.
@@ -44,7 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @return A size range used for asynchronously measuring the node.
  * @see collectionNode:constrainedSizeForSupplementaryElementOfKind:atIndexPath:
  */
-- (ASSizeRange)sizeRangeForSupplementaryElementOfKind:(NSString *)elementKind atIndex:(NSInteger)index;
+- (ASSizeRange)sizeRangeForSupplementaryElementOfKind:(NSString *)elementKind
+                                              atIndex:(NSInteger)index;
 
 @end
 

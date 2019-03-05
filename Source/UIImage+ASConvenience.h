@@ -7,8 +7,8 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <UIKit/UIKit.h>
 #import <AsyncDisplayKit/ASBaseDefines.h>
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -27,7 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  A version of imageNamed that caches results because loading an image is expensive.
  *  Calling with the same name value will usually return the same object.  A UIImage,
- *  after creation, is immutable and thread-safe so it's fine to share these objects across multiple threads.
+ *  after creation, is immutable and thread-safe so it's fine to share these objects across multiple
+ * threads.
  *
  *  @param imageName The name of the image to load
  *  @return The loaded image or nil
@@ -37,22 +38,25 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  *  A version of imageNamed that caches results because loading an image is expensive.
  *  Calling with the same name value will usually return the same object.  A UIImage,
- *  after creation, is immutable and thread-safe so it's fine to share these objects across multiple threads.
+ *  after creation, is immutable and thread-safe so it's fine to share these objects across multiple
+ * threads.
  *
  *  @param imageName The name of the image to load
  *  @param traitCollection The traits associated with the intended environment for the image.
  *  @return The loaded image or nil
  */
-+ (nullable UIImage *)as_imageNamed:(NSString *)imageName compatibleWithTraitCollection:(nullable UITraitCollection *)traitCollection NS_RETURNS_RETAINED;
++ (nullable UIImage *)as_imageNamed:(NSString *)imageName
+      compatibleWithTraitCollection:(nullable UITraitCollection *)traitCollection
+    NS_RETURNS_RETAINED;
 
 @end
 
 /**
  * High-performance flat-colored, rounded-corner resizable images
  *
- * For "Baked-in Opaque" corners, set cornerColor equal to the color behind the rounded image object,
- * i.e. the background color.
- * For "Baked-in Alpha" corners, set cornerColor = [UIColor clearColor]
+ * For "Baked-in Opaque" corners, set cornerColor equal to the color behind the rounded image
+ * object, i.e. the background color. For "Baked-in Alpha" corners, set cornerColor = [UIColor
+ * clearColor]
  *
  * See http://asyncdisplaykit.org/docs/corner-rounding.html for an explanation.
  */
@@ -68,7 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (UIImage *)as_resizableRoundedImageWithCornerRadius:(CGFloat)cornerRadius
                                           cornerColor:(nullable UIColor *)cornerColor
-                                            fillColor:(UIColor *)fillColor NS_RETURNS_RETAINED AS_WARN_UNUSED_RESULT;
+                                            fillColor:(UIColor *)fillColor NS_RETURNS_RETAINED
+    AS_WARN_UNUSED_RESULT;
 
 /**
  * This generates a flat-color, rounded-corner resizeable image with a border
@@ -83,7 +88,8 @@ NS_ASSUME_NONNULL_BEGIN
                                           cornerColor:(UIColor *)cornerColor
                                             fillColor:(UIColor *)fillColor
                                           borderColor:(nullable UIColor *)borderColor
-                                          borderWidth:(CGFloat)borderWidth NS_RETURNS_RETAINED AS_WARN_UNUSED_RESULT;
+                                          borderWidth:(CGFloat)borderWidth NS_RETURNS_RETAINED
+    AS_WARN_UNUSED_RESULT;
 
 /**
  * This generates a flat-color, rounded-corner resizeable image with a border
@@ -93,7 +99,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @param fillColor       The fill color of the rounded-corner image
  * @param borderColor     The border color. Set to nil for no border.
  * @param borderWidth     The border width. Dummy value if borderColor = nil.
- * @param roundedCorners  Select individual or multiple corners to round. Set to UIRectCornerAllCorners to round all 4 corners.
+ * @param roundedCorners  Select individual or multiple corners to round. Set to
+ * UIRectCornerAllCorners to round all 4 corners.
  * @param scale           The number of pixels per point. Provide 0.0 to use the screen scale.
  */
 + (UIImage *)as_resizableRoundedImageWithCornerRadius:(CGFloat)cornerRadius
@@ -102,7 +109,8 @@ NS_ASSUME_NONNULL_BEGIN
                                           borderColor:(nullable UIColor *)borderColor
                                           borderWidth:(CGFloat)borderWidth
                                        roundedCorners:(UIRectCorner)roundedCorners
-                                                scale:(CGFloat)scale NS_RETURNS_RETAINED AS_WARN_UNUSED_RESULT;
+                                                scale:(CGFloat)scale NS_RETURNS_RETAINED
+    AS_WARN_UNUSED_RESULT;
 
 @end
 

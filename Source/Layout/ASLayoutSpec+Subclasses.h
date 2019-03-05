@@ -7,9 +7,9 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <Foundation/Foundation.h>
-#import <AsyncDisplayKit/ASLayoutSpec.h>
 #import <AsyncDisplayKit/ASLayout.h>
+#import <AsyncDisplayKit/ASLayoutSpec.h>
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -24,8 +24,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param index An index associated with the child.
  *
- * @discussion Every ASLayoutSpec must act on at least one child. The ASLayoutSpec base class takes the
- * responsibility of holding on to the spec children. Some layout specs, like ASInsetLayoutSpec,
+ * @discussion Every ASLayoutSpec must act on at least one child. The ASLayoutSpec base class takes
+ * the responsibility of holding on to the spec children. Some layout specs, like ASInsetLayoutSpec,
  * only require a single child.
  *
  * For layout specs that require a known number of children (ASBackgroundLayoutSpec, for example)
@@ -52,7 +52,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @discussion When being used as a sublayout, this property must not equal CGPointNull.
  */
-@property (nonatomic) CGPoint position;
+@property(nonatomic) CGPoint position;
 
 @end
 

@@ -16,7 +16,8 @@
  Private header for ASDisplayNode.mm
 
  _ASPendingState is a proxy for a UIView that has yet to be created.
- In response to its setters, it sets an internal property and a flag that indicates that that property has been set.
+ In response to its setters, it sets an internal property and a flag that indicates that that
+ property has been set.
 
  When you want to configure a view from this pending state information, just call -applyToView:
  */
@@ -31,10 +32,10 @@
 + (_ASPendingState *)pendingViewStateFromLayer:(CALayer *)layer;
 + (_ASPendingState *)pendingViewStateFromView:(UIView *)view;
 
-@property (nonatomic, readonly) BOOL hasSetNeedsLayout;
-@property (nonatomic, readonly) BOOL hasSetNeedsDisplay;
+@property(nonatomic, readonly) BOOL hasSetNeedsLayout;
+@property(nonatomic, readonly) BOOL hasSetNeedsDisplay;
 
-@property (nonatomic, readonly) BOOL hasChanges;
+@property(nonatomic, readonly) BOOL hasChanges;
 
 - (void)clearChanges;
 

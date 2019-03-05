@@ -21,36 +21,38 @@
 static NSNumber *allowsGroupOpacityFromUIKitOrNil;
 static NSNumber *allowsEdgeAntialiasingFromUIKitOrNil;
 
-BOOL ASDefaultAllowsGroupOpacity()
-{
+BOOL ASDefaultAllowsGroupOpacity() {
   static BOOL groupOpacity;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    NSNumber *groupOpacityObj = allowsGroupOpacityFromUIKitOrNil ?: [NSBundle.mainBundle objectForInfoDictionaryKey:@"UIViewGroupOpacity"];
+    NSNumber *groupOpacityObj =
+        allowsGroupOpacityFromUIKitOrNil
+            ?: [NSBundle.mainBundle objectForInfoDictionaryKey:@"UIViewGroupOpacity"];
     groupOpacity = groupOpacityObj ? groupOpacityObj.boolValue : YES;
   });
   return groupOpacity;
 }
 
-BOOL ASDefaultAllowsEdgeAntialiasing()
-{
+BOOL ASDefaultAllowsEdgeAntialiasing() {
   static BOOL edgeAntialiasing;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    NSNumber *antialiasingObj = allowsEdgeAntialiasingFromUIKitOrNil ?: [NSBundle.mainBundle objectForInfoDictionaryKey:@"UIViewEdgeAntialiasing"];
+    NSNumber *antialiasingObj =
+        allowsEdgeAntialiasingFromUIKitOrNil
+            ?: [NSBundle.mainBundle objectForInfoDictionaryKey:@"UIViewEdgeAntialiasing"];
     edgeAntialiasing = antialiasingObj ? antialiasingObj.boolValue : NO;
   });
   return edgeAntialiasing;
 }
 
-void ASInitializeFrameworkMainThread(void)
-{
+void ASInitializeFrameworkMainThread(void) {
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     ASDisplayNodeCAssertMainThread();
     // Ensure these values are cached on the main thread before needed in the background.
     if (ASActivateExperimentalFeature(ASExperimentalLayerDefaults)) {
-      // Nop. We will gather default values on-demand in ASDefaultAllowsGroupOpacity and ASDefaultAllowsEdgeAntialiasing
+      // Nop. We will gather default values on-demand in ASDefaultAllowsGroupOpacity and
+      // ASDefaultAllowsEdgeAntialiasing
     } else {
       CALayer *layer = [[[UIView alloc] init] layer];
       allowsGroupOpacityFromUIKitOrNil = @(layer.allowsGroupOpacity);
@@ -60,33 +62,32 @@ void ASInitializeFrameworkMainThread(void)
   });
 }
 
-BOOL ASSubclassOverridesSelector(Class superclass, Class subclass, SEL selector)
-{
-  if (superclass == subclass) return NO; // Even if the class implements the selector, it doesn't override itself.
+BOOL ASSubclassOverridesSelector(Class superclass, Class subclass, SEL selector) {
+  if (superclass == subclass)
+    return NO;  // Even if the class implements the selector, it doesn't override itself.
   Method superclassMethod = class_getInstanceMethod(superclass, selector);
   Method subclassMethod = class_getInstanceMethod(subclass, selector);
   return (superclassMethod != subclassMethod);
 }
 
-BOOL ASSubclassOverridesClassSelector(Class superclass, Class subclass, SEL selector)
-{
-  if (superclass == subclass) return NO; // Even if the class implements the selector, it doesn't override itself.
+BOOL ASSubclassOverridesClassSelector(Class superclass, Class subclass, SEL selector) {
+  if (superclass == subclass)
+    return NO;  // Even if the class implements the selector, it doesn't override itself.
   Method superclassMethod = class_getClassMethod(superclass, selector);
   Method subclassMethod = class_getClassMethod(subclass, selector);
   return (superclassMethod != subclassMethod);
 }
 
-IMP ASReplaceMethodWithBlock(Class c, SEL origSEL, id block)
-{
+IMP ASReplaceMethodWithBlock(Class c, SEL origSEL, id block) {
   NSCParameterAssert(block);
-  
+
   // Get original method
   Method origMethod = class_getInstanceMethod(c, origSEL);
   NSCParameterAssert(origMethod);
-  
+
   // Convert block to IMP trampoline and replace method implementation
   IMP newIMP = imp_implementationWithBlock(block);
-  
+
   // Try adding the method if not yet in the current class
   if (!class_addMethod(c, origSEL, newIMP, method_getTypeEncoding(origMethod))) {
     return method_setImplementation(origMethod, newIMP);
@@ -95,9 +96,8 @@ IMP ASReplaceMethodWithBlock(Class c, SEL origSEL, id block)
   }
 }
 
-void ASPerformBlockOnMainThread(void (^block)(void))
-{
-  if (block == nil){
+void ASPerformBlockOnMainThread(void (^block)(void)) {
+  if (block == nil) {
     return;
   }
   if (ASDisplayNodeThreadIsMain()) {
@@ -107,9 +107,8 @@ void ASPerformBlockOnMainThread(void (^block)(void))
   }
 }
 
-void ASPerformBlockOnBackgroundThread(void (^block)(void))
-{
-  if (block == nil){
+void ASPerformBlockOnBackgroundThread(void (^block)(void)) {
+  if (block == nil) {
     return;
   }
   if (ASDisplayNodeThreadIsMain()) {
@@ -119,13 +118,11 @@ void ASPerformBlockOnBackgroundThread(void (^block)(void))
   }
 }
 
-void ASPerformBackgroundDeallocation(id __strong _Nullable * _Nonnull object)
-{
+void ASPerformBackgroundDeallocation(id __strong _Nullable *_Nonnull object) {
   [[ASDeallocQueue sharedDeallocationQueue] releaseObjectInBackground:object];
 }
 
-Class _Nullable ASGetClassFromType(const char  * _Nullable type)
-{
+Class _Nullable ASGetClassFromType(const char *_Nullable type) {
   // Class types all start with @"
   if (type == NULL || strncmp(type, "@\"", 2) != 0) {
     return Nil;
@@ -146,8 +143,7 @@ Class _Nullable ASGetClassFromType(const char  * _Nullable type)
   return objc_getClass(className);
 }
 
-CGFloat ASScreenScale()
-{
+CGFloat ASScreenScale() {
   static CGFloat __scale = 0.0;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
@@ -158,8 +154,7 @@ CGFloat ASScreenScale()
   return __scale;
 }
 
-CGSize ASFloorSizeValues(CGSize s)
-{
+CGSize ASFloorSizeValues(CGSize s) {
   return CGSizeMake(ASFloorPixelValue(s.width), ASFloorPixelValue(s.height));
 }
 
@@ -176,19 +171,16 @@ CGSize ASFloorSizeValues(CGSize s)
 // po (100.66666666663 + FLT_EPSILON) * 3 = 302.00000035751782
 // floor(302.00000035751782) = 302
 // 302/3 = 100.66666666
-CGFloat ASFloorPixelValue(CGFloat f)
-{
+CGFloat ASFloorPixelValue(CGFloat f) {
   CGFloat scale = ASScreenScale();
   return floor((f + FLT_EPSILON) * scale) / scale;
 }
 
-CGPoint ASCeilPointValues(CGPoint p)
-{
+CGPoint ASCeilPointValues(CGPoint p) {
   return CGPointMake(ASCeilPixelValue(p.x), ASCeilPixelValue(p.y));
 }
 
-CGSize ASCeilSizeValues(CGSize s)
-{
+CGSize ASCeilSizeValues(CGSize s) {
   return CGSizeMake(ASCeilPixelValue(s.width), ASCeilPixelValue(s.height));
 }
 
@@ -211,22 +203,19 @@ CGSize ASCeilSizeValues(CGSize s)
 //
 // For even more conversation around this, see:
 // https://github.com/TextureGroup/Texture/issues/838
-CGFloat ASCeilPixelValue(CGFloat f)
-{
+CGFloat ASCeilPixelValue(CGFloat f) {
   CGFloat scale = ASScreenScale();
   return ceil((f - FLT_EPSILON) * scale) / scale;
 }
 
-CGFloat ASRoundPixelValue(CGFloat f)
-{
+CGFloat ASRoundPixelValue(CGFloat f) {
   CGFloat scale = ASScreenScale();
   return round(f * scale) / scale;
 }
 
 @implementation NSIndexPath (ASInverseComparison)
 
-- (NSComparisonResult)asdk_inverseCompare:(NSIndexPath *)otherIndexPath
-{
+- (NSComparisonResult)asdk_inverseCompare:(NSIndexPath *)otherIndexPath {
   return [otherIndexPath compare:self];
 }
 

@@ -8,9 +8,9 @@
 //
 
 #import "ASTextAttribute.h"
-#import <UIKit/UIKit.h>
-#import <CoreText/CoreText.h>
 #import <AsyncDisplayKit/NSAttributedString+ASText.h>
+#import <CoreText/CoreText.h>
+#import <UIKit/UIKit.h>
 
 NSString *const ASTextBackedStringAttributeName = @"ASTextBackedString";
 NSString *const ASTextBindingAttributeName = @"ASTextBinding";
@@ -28,22 +28,22 @@ NSString *const ASTextGlyphTransformAttributeName = @"ASTextGlyphTransform";
 NSString *const ASTextAttachmentToken = @"\uFFFC";
 NSString *const ASTextTruncationToken = @"\u2026";
 
-
-ASTextAttributeType ASTextAttributeGetType(NSString *name){
+ASTextAttributeType ASTextAttributeGetType(NSString *name) {
   if (name.length == 0) return ASTextAttributeTypeNone;
-  
+
   static NSMutableDictionary *dic;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
     dic = [NSMutableDictionary new];
-    NSNumber *All = @(ASTextAttributeTypeUIKit | ASTextAttributeTypeCoreText | ASTextAttributeTypeASText);
+    NSNumber *All =
+        @(ASTextAttributeTypeUIKit | ASTextAttributeTypeCoreText | ASTextAttributeTypeASText);
     NSNumber *CoreText_ASText = @(ASTextAttributeTypeCoreText | ASTextAttributeTypeASText);
     NSNumber *UIKit_ASText = @(ASTextAttributeTypeUIKit | ASTextAttributeTypeASText);
     NSNumber *UIKit_CoreText = @(ASTextAttributeTypeUIKit | ASTextAttributeTypeCoreText);
     NSNumber *UIKit = @(ASTextAttributeTypeUIKit);
     NSNumber *CoreText = @(ASTextAttributeTypeCoreText);
     NSNumber *ASText = @(ASTextAttributeTypeASText);
-    
+
     dic[NSFontAttributeName] = All;
     dic[NSKernAttributeName] = All;
     dic[NSForegroundColorAttributeName] = UIKit;
@@ -58,7 +58,8 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
     dic[NSUnderlineStyleAttributeName] = UIKit_CoreText;
     dic[(id)kCTUnderlineColorAttributeName] = CoreText;
     dic[NSLigatureAttributeName] = All;
-    dic[(id)kCTSuperscriptAttributeName] = UIKit; //it's a CoreText attrubite, but only supported by UIKit...
+    dic[(id)kCTSuperscriptAttributeName] =
+        UIKit;  // it's a CoreText attrubite, but only supported by UIKit...
     dic[NSVerticalGlyphFormAttributeName] = All;
     dic[(id)kCTGlyphInfoAttributeName] = CoreText_ASText;
 #if TARGET_OS_IOS
@@ -73,7 +74,7 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
     dic[(id)kCTBaselineReferenceInfoAttributeName] = CoreText_ASText;
     dic[(id)kCTWritingDirectionAttributeName] = CoreText_ASText;
     dic[NSParagraphStyleAttributeName] = All;
-    
+
     dic[NSStrikethroughColorAttributeName] = UIKit;
     dic[NSUnderlineColorAttributeName] = UIKit;
     dic[NSTextEffectAttributeName] = UIKit;
@@ -85,7 +86,7 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
     dic[NSAttachmentAttributeName] = UIKit;
     dic[NSLinkAttributeName] = UIKit;
     dic[(id)kCTRubyAnnotationAttributeName] = CoreText;
-    
+
     dic[ASTextBackedStringAttributeName] = ASText;
     dic[ASTextBindingAttributeName] = ASText;
     dic[ASTextShadowAttributeName] = ASText;
@@ -103,7 +104,6 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
   if (num) return num.integerValue;
   return ASTextAttributeTypeNone;
 }
-
 
 @implementation ASTextBackedString
 
@@ -131,7 +131,6 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
 
 @end
 
-
 @implementation ASTextBinding
 
 + (instancetype)bindingWithDeleteConfirm:(BOOL)deleteConfirm NS_RETURNS_RETAINED {
@@ -158,10 +157,11 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
 
 @end
 
-
 @implementation ASTextShadow
 
-+ (instancetype)shadowWithColor:(UIColor *)color offset:(CGSize)offset radius:(CGFloat)radius NS_RETURNS_RETAINED {
++ (instancetype)shadowWithColor:(UIColor *)color
+                         offset:(CGSize)offset
+                         radius:(CGFloat)radius NS_RETURNS_RETAINED {
   ASTextShadow *one = [self new];
   one.color = color;
   one.offset = offset;
@@ -221,7 +221,6 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
 
 @end
 
-
 @implementation ASTextDecoration
 
 - (instancetype)init {
@@ -235,7 +234,9 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
   one.style = style;
   return one;
 }
-+ (instancetype)decorationWithStyle:(ASTextLineStyle)style width:(NSNumber *)width color:(UIColor *)color NS_RETURNS_RETAINED {
++ (instancetype)decorationWithStyle:(ASTextLineStyle)style
+                              width:(NSNumber *)width
+                              color:(UIColor *)color NS_RETURNS_RETAINED {
   ASTextDecoration *one = [self new];
   one.style = style;
   one.width = width;
@@ -267,10 +268,11 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
 
 @end
 
-
 @implementation ASTextBorder
 
-+ (instancetype)borderWithLineStyle:(ASTextLineStyle)lineStyle lineWidth:(CGFloat)width strokeColor:(UIColor *)color NS_RETURNS_RETAINED {
++ (instancetype)borderWithLineStyle:(ASTextLineStyle)lineStyle
+                          lineWidth:(CGFloat)width
+                        strokeColor:(UIColor *)color NS_RETURNS_RETAINED {
   ASTextBorder *one = [self new];
   one.lineStyle = lineStyle;
   one.strokeWidth = width;
@@ -278,7 +280,8 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
   return one;
 }
 
-+ (instancetype)borderWithFillColor:(UIColor *)color cornerRadius:(CGFloat)cornerRadius NS_RETURNS_RETAINED {
++ (instancetype)borderWithFillColor:(UIColor *)color
+                       cornerRadius:(CGFloat)cornerRadius NS_RETURNS_RETAINED {
   ASTextBorder *one = [self new];
   one.fillColor = color;
   one.cornerRadius = cornerRadius;
@@ -331,7 +334,6 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
 
 @end
 
-
 @implementation ASTextAttachment
 
 + (instancetype)attachmentWithContent:(id)content NS_RETURNS_RETAINED {
@@ -368,7 +370,6 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
 
 @end
 
-
 @implementation ASTextHighlight
 
 + (instancetype)highlightWithAttributes:(NSDictionary *)attributes NS_RETURNS_RETAINED {
@@ -382,7 +383,7 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
   highlightBorder.insets = UIEdgeInsetsMake(-2, -1, -2, -1);
   highlightBorder.cornerRadius = 3;
   highlightBorder.fillColor = color;
-  
+
   ASTextHighlight *one = [self new];
   [one setBackgroundBorder:highlightBorder];
   return one;
@@ -411,7 +412,8 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
   if (font == (id)[NSNull null] || font == nil) {
     ((NSMutableDictionary *)_attributes)[(id)kCTFontAttributeName] = [NSNull null];
   } else {
-    CTFontRef ctFont = CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
+    CTFontRef ctFont =
+        CTFontCreateWithName((__bridge CFStringRef)font.fontName, font.pointSize, NULL);
     if (ctFont) {
       ((NSMutableDictionary *)_attributes)[(id)kCTFontAttributeName] = (__bridge id)(ctFont);
       CFRelease(ctFont);
@@ -425,7 +427,8 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
     ((NSMutableDictionary *)_attributes)[(id)kCTForegroundColorAttributeName] = [NSNull null];
     ((NSMutableDictionary *)_attributes)[NSForegroundColorAttributeName] = [NSNull null];
   } else {
-    ((NSMutableDictionary *)_attributes)[(id)kCTForegroundColorAttributeName] = (__bridge id)(color.CGColor);
+    ((NSMutableDictionary *)_attributes)[(id)kCTForegroundColorAttributeName] =
+        (__bridge id)(color.CGColor);
     ((NSMutableDictionary *)_attributes)[NSForegroundColorAttributeName] = color;
   }
 }
@@ -445,7 +448,8 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
     ((NSMutableDictionary *)_attributes)[(id)kCTStrokeColorAttributeName] = [NSNull null];
     ((NSMutableDictionary *)_attributes)[NSStrokeColorAttributeName] = [NSNull null];
   } else {
-    ((NSMutableDictionary *)_attributes)[(id)kCTStrokeColorAttributeName] = (__bridge id)(color.CGColor);
+    ((NSMutableDictionary *)_attributes)[(id)kCTStrokeColorAttributeName] =
+        (__bridge id)(color.CGColor);
     ((NSMutableDictionary *)_attributes)[NSStrokeColorAttributeName] = color;
   }
 }
@@ -485,4 +489,3 @@ ASTextAttributeType ASTextAttributeGetType(NSString *name){
 }
 
 @end
-

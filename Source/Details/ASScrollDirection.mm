@@ -9,8 +9,10 @@
 
 #import <AsyncDisplayKit/ASScrollDirection.h>
 
-const ASScrollDirection ASScrollDirectionHorizontalDirections = ASScrollDirectionLeft | ASScrollDirectionRight;
-const ASScrollDirection ASScrollDirectionVerticalDirections = ASScrollDirectionUp | ASScrollDirectionDown;
+const ASScrollDirection ASScrollDirectionHorizontalDirections =
+    ASScrollDirectionLeft | ASScrollDirectionRight;
+const ASScrollDirection ASScrollDirectionVerticalDirections =
+    ASScrollDirectionUp | ASScrollDirectionDown;
 
 BOOL ASScrollDirectionContainsVerticalDirection(ASScrollDirection scrollDirection) {
   return (scrollDirection & ASScrollDirectionVerticalDirections) != 0;
@@ -54,7 +56,8 @@ ASScrollDirection ASScrollDirectionInvertVertically(ASScrollDirection scrollDire
   return scrollDirection;
 }
 
-ASScrollDirection ASScrollDirectionApplyTransform(ASScrollDirection scrollDirection, CGAffineTransform transform) {
+ASScrollDirection ASScrollDirectionApplyTransform(ASScrollDirection scrollDirection,
+                                                  CGAffineTransform transform) {
   if ((transform.a < 0) && ASScrollDirectionContainsHorizontalDirection(scrollDirection)) {
     return ASScrollDirectionInvertHorizontally(scrollDirection);
   } else if ((transform.d < 0) && ASScrollDirectionContainsVerticalDirection(scrollDirection)) {

@@ -7,8 +7,8 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <Foundation/Foundation.h>
 #import <AsyncDisplayKit/ASBaseDefines.h>
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -42,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
 AS_SUBCLASSING_RESTRICTED
 @interface ASMutableAttributedStringBuilder : NSMutableAttributedString
 
-- (instancetype)initWithString:(NSString *)str attributes:(nullable NSDictionary<NSString *, id> *)attrs;
+- (instancetype)initWithString:(NSString *)str
+                    attributes:(nullable NSDictionary<NSString *, id> *)attrs;
 - (instancetype)initWithAttributedString:(NSAttributedString *)attrStr;
 
 - (void)replaceCharactersInRange:(NSRange)range withString:(NSString *)str;
@@ -52,7 +53,8 @@ AS_SUBCLASSING_RESTRICTED
 - (void)addAttributes:(NSDictionary<NSString *, id> *)attrs range:(NSRange)range;
 - (void)removeAttribute:(NSString *)name range:(NSRange)range;
 
-- (void)replaceCharactersInRange:(NSRange)range withAttributedString:(NSAttributedString *)attrString;
+- (void)replaceCharactersInRange:(NSRange)range
+            withAttributedString:(NSAttributedString *)attrString;
 - (void)insertAttributedString:(NSAttributedString *)attrString atIndex:(NSUInteger)loc;
 - (void)appendAttributedString:(NSAttributedString *)attrString;
 - (void)deleteCharactersInRange:(NSRange)range;

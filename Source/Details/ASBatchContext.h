@@ -28,17 +28,18 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param didComplete A boolean that states whether or not the batch fetch completed.
  *
- * @discussion Only by passing YES will the owner of the context know to attempt another batch update when necessary.
- * For instance, when a table has reached the end of its data, a batch fetch will be attempted unless the context
- * object thinks that it is still fetching.
+ * @discussion Only by passing YES will the owner of the context know to attempt another batch
+ * update when necessary. For instance, when a table has reached the end of its data, a batch fetch
+ * will be attempted unless the context object thinks that it is still fetching.
  */
 - (void)completeBatchFetching:(BOOL)didComplete;
 
 /**
  * Ask the context object if the batch fetching process was cancelled by the context owner.
  *
- * @discussion If an error occurs in the context owner, the batch fetching may become out of sync and need to be
- * cancelled. For best practices, pass the return value of -batchWasCancelled to -completeBatchFetch:.
+ * @discussion If an error occurs in the context owner, the batch fetching may become out of sync
+ * and need to be cancelled. For best practices, pass the return value of -batchWasCancelled to
+ * -completeBatchFetch:.
  *
  * @return A boolean reflecting if the context object owner had to cancel the batch process.
  */
@@ -47,16 +48,18 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Notify the context object that something has interrupted the batch fetching process.
  *
- * @discussion Call this method only when something has corrupted the batch fetching process. Calling this method should
- * be left to the owner of the batch process unless there is a specific purpose.
+ * @discussion Call this method only when something has corrupted the batch fetching process.
+ * Calling this method should be left to the owner of the batch process unless there is a specific
+ * purpose.
  */
 - (void)cancelBatchFetching;
 
 /**
  * Notify the context object that fetching has started.
  *
- * @discussion Call this method only when you are beginning a fetch process. This should really only be called by the 
- * context object's owner. Calling this method should be paired with -completeBatchFetching:.
+ * @discussion Call this method only when you are beginning a fetch process. This should really only
+ * be called by the context object's owner. Calling this method should be paired with
+ * -completeBatchFetching:.
  */
 - (void)beginBatchFetching;
 

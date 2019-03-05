@@ -25,17 +25,19 @@
 /**
  ASTextKitRenderer is a modular object that is responsible for laying out and drawing text.
 
- A renderer will hold onto the TextKit layouts for the given attributes after initialization.  This may constitute a
- large amount of memory for large enough applications, so care must be taken when keeping many of these around in-memory
- at once.
+ A renderer will hold onto the TextKit layouts for the given attributes after initialization.  This
+ may constitute a large amount of memory for large enough applications, so care must be taken when
+ keeping many of these around in-memory at once.
 
- This object is designed to be modular and simple.  All complex maintenance of state should occur in sub-objects or be
- derived via pure functions or categories.  No touch-related handling belongs in this class.
+ This object is designed to be modular and simple.  All complex maintenance of state should occur in
+ sub-objects or be derived via pure functions or categories.  No touch-related handling belongs in
+ this class.
 
- ALL sizing and layout information from this class is in the external coordinate space of the TextKit components.  This
- is an important distinction because all internal sizing and layout operations are carried out within the shadowed
- coordinate space.  Padding will be added for you in order to ensure clipping does not occur, and additional information
- on this transform is available via the shadower should you need it.
+ ALL sizing and layout information from this class is in the external coordinate space of the
+ TextKit components.  This is an important distinction because all internal sizing and layout
+ operations are carried out within the shadowed coordinate space.  Padding will be added for you in
+ order to ensure clipping does not occur, and additional information on this transform is available
+ via the shadower should you need it.
  */
 @interface ASTextKitRenderer : NSObject
 
@@ -46,19 +48,19 @@
 - (instancetype)initWithTextKitAttributes:(const ASTextKitAttributes &)textComponentAttributes
                           constrainedSize:(const CGSize)constrainedSize;
 
-@property (nonatomic, readonly) ASTextKitContext *context;
+@property(nonatomic, readonly) ASTextKitContext *context;
 
-@property (nonatomic, readonly) id<ASTextKitTruncating> truncater;
+@property(nonatomic, readonly) id<ASTextKitTruncating> truncater;
 
-@property (nonatomic, readonly) ASTextKitFontSizeAdjuster *fontSizeAdjuster;
+@property(nonatomic, readonly) ASTextKitFontSizeAdjuster *fontSizeAdjuster;
 
-@property (nonatomic, readonly) ASTextKitShadower *shadower;
+@property(nonatomic, readonly) ASTextKitShadower *shadower;
 
-@property (nonatomic, readonly) ASTextKitAttributes attributes;
+@property(nonatomic, readonly) ASTextKitAttributes attributes;
 
-@property (nonatomic, readonly) CGSize constrainedSize;
+@property(nonatomic, readonly) CGSize constrainedSize;
 
-@property (nonatomic, readonly) CGFloat currentScaleFactor;
+@property(nonatomic, readonly) CGFloat currentScaleFactor;
 
 #pragma mark - Drawing
 /**
@@ -71,17 +73,18 @@
 #pragma mark - Layout
 
 /**
- Returns the computed size of the renderer given the constrained size and other parameters in the initializer.
+ Returns the computed size of the renderer given the constrained size and other parameters in the
+ initializer.
  */
 - (CGSize)size;
 
 #pragma mark - Text Ranges
 
 /**
- The character range from the original attributedString that is displayed by the renderer given the parameters in the
- initializer.
+ The character range from the original attributedString that is displayed by the renderer given the
+ parameters in the initializer.
  */
-@property (nonatomic, readonly) std::vector<NSRange> visibleRanges;
+@property(nonatomic, readonly) std::vector<NSRange> visibleRanges;
 
 /**
  The number of lines shown in the string.
@@ -98,10 +101,10 @@
 @interface ASTextKitRenderer (ASTextKitRendererConvenience)
 
 /**
- Returns the first visible range or an NSRange with location of NSNotFound and size of 0 if no first visible
- range exists
+ Returns the first visible range or an NSRange with location of NSNotFound and size of 0 if no first
+ visible range exists
  */
-@property (nonatomic, readonly) NSRange firstVisibleRange;
+@property(nonatomic, readonly) NSRange firstVisibleRange;
 
 @end
 

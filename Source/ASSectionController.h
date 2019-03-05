@@ -7,9 +7,9 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <Foundation/Foundation.h>
 #import <AsyncDisplayKit/ASBlockTypes.h>
 #import <AsyncDisplayKit/ASDimension.h>
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -53,8 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
  * Asks the section controller whether it should batch fetch because the user is
  * near the end of the current data set.
  *
- * @discussion Use this method to conditionally fetch batches. Example use cases are: limiting the total number of
- * objects that can be fetched or no network connection.
+ * @discussion Use this method to conditionally fetch batches. Example use cases are: limiting the
+ * total number of objects that can be fetched or no network connection.
  *
  * If not implemented, the assumed return value is @c YES.
  */
@@ -66,8 +66,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param context A context object that must be notified when the batch fetch is completed.
  *
- * @discussion You must eventually call -completeBatchFetching: with an argument of YES in order to receive future
- * notifications to do batch fetches. This method is called on a background queue.
+ * @discussion You must eventually call -completeBatchFetching: with an argument of YES in order to
+ * receive future notifications to do batch fetches. This method is called on a background queue.
  */
 - (void)beginBatchFetchWithContext:(ASBatchContext *)context;
 

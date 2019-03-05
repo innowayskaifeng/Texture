@@ -17,8 +17,7 @@
 
 - (instancetype)initWithNode:(ASDisplayNode *)node
                         kind:(ASTipKind)kind
-                      format:(NSString *)format, ...
-{
+                      format:(NSString *)format, ... {
   if (self = [super init]) {
     _node = node;
     _kind = kind;
@@ -32,4 +31,4 @@
 
 @end
 
-#endif // AS_ENABLE_TIPS
+#endif  // AS_ENABLE_TIPS

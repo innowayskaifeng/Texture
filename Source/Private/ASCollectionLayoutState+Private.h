@@ -18,7 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @discussion This method is atomic and thread-safe
  */
-- (nullable ASPageToLayoutAttributesTable *)getAndRemoveUnmeasuredLayoutAttributesPageTableInRect:(CGRect)rect;
+- (nullable ASPageToLayoutAttributesTable *)getAndRemoveUnmeasuredLayoutAttributesPageTableInRect:
+    (CGRect)rect;
 
 @end
 

@@ -6,17 +6,17 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <AsyncDisplayKit/NSAttributedString+ASText.h>
-#import <AsyncDisplayKit/NSParagraphStyle+ASText.h>
 #import <AsyncDisplayKit/ASTextRunDelegate.h>
 #import <AsyncDisplayKit/ASTextUtilities.h>
+#import <AsyncDisplayKit/NSAttributedString+ASText.h>
+#import <AsyncDisplayKit/NSParagraphStyle+ASText.h>
 #import <CoreFoundation/CoreFoundation.h>
 
-
 // Dummy class for category
-@interface NSAttributedString_ASText : NSObject @end
-@implementation NSAttributedString_ASText @end
-
+@interface NSAttributedString_ASText : NSObject
+@end
+@implementation NSAttributedString_ASText
+@end
 
 @implementation NSAttributedString (ASText)
 
@@ -60,7 +60,9 @@
 - (UIColor *)as_colorAtIndex:(NSUInteger)index {
   UIColor *color = [self as_attribute:NSForegroundColorAttributeName atIndex:index];
   if (!color) {
-    CGColorRef ref = (__bridge CGColorRef)([self as_attribute:(NSString *)kCTForegroundColorAttributeName atIndex:index]);
+    CGColorRef ref =
+        (__bridge CGColorRef)([self as_attribute:(NSString *)kCTForegroundColorAttributeName
+                                         atIndex:index]);
     color = [UIColor colorWithCGColor:ref];
   }
   if (color && ![color isKindOfClass:[UIColor class]]) {
@@ -96,7 +98,9 @@
 - (UIColor *)as_strokeColorAtIndex:(NSUInteger)index {
   UIColor *color = [self as_attribute:NSStrokeColorAttributeName atIndex:index];
   if (!color) {
-    CGColorRef ref = (__bridge CGColorRef)([self as_attribute:(NSString *)kCTStrokeColorAttributeName atIndex:index]);
+    CGColorRef ref =
+        (__bridge CGColorRef)([self as_attribute:(NSString *)kCTStrokeColorAttributeName
+                                         atIndex:index]);
     color = [UIColor colorWithCGColor:ref];
   }
   return color;
@@ -143,7 +147,9 @@
 - (UIColor *)as_underlineColorAtIndex:(NSUInteger)index {
   UIColor *color = [self as_attribute:NSUnderlineColorAttributeName atIndex:index];
   if (!color) {
-    CGColorRef ref = (__bridge CGColorRef)([self as_attribute:(NSString *)kCTUnderlineColorAttributeName atIndex:index]);
+    CGColorRef ref =
+        (__bridge CGColorRef)([self as_attribute:(NSString *)kCTUnderlineColorAttributeName
+                                         atIndex:index]);
     color = [UIColor colorWithCGColor:ref];
   }
   return color;
@@ -221,30 +227,30 @@
 - (NSParagraphStyle *)as_paragraphStyleAtIndex:(NSUInteger)index {
   /*
    NSParagraphStyle is NOT toll-free bridged to CTParagraphStyleRef.
-   
+
    CoreText can use both NSParagraphStyle and CTParagraphStyleRef,
    but UILabel/UITextView can only use NSParagraphStyle.
-   
+
    We use NSParagraphStyle in both CoreText and UIKit.
    */
   NSParagraphStyle *style = [self as_attribute:NSParagraphStyleAttributeName atIndex:index];
   if (style) {
-    if (CFGetTypeID((__bridge CFTypeRef)(style)) == CTParagraphStyleGetTypeID()) { \
+    if (CFGetTypeID((__bridge CFTypeRef)(style)) == CTParagraphStyleGetTypeID()) {
       style = [NSParagraphStyle as_styleWithCTStyle:(__bridge CTParagraphStyleRef)(style)];
     }
   }
   return style;
 }
 
-#define ParagraphAttribute(_attr_) \
-NSParagraphStyle *style = self.as_paragraphStyle; \
-if (!style) style = [NSParagraphStyle defaultParagraphStyle]; \
-return style. _attr_;
+#define ParagraphAttribute(_attr_)                              \
+  NSParagraphStyle *style = self.as_paragraphStyle;             \
+  if (!style) style = [NSParagraphStyle defaultParagraphStyle]; \
+  return style._attr_;
 
-#define ParagraphAttributeAtIndex(_attr_) \
-NSParagraphStyle *style = [self as_paragraphStyleAtIndex:index]; \
-if (!style) style = [NSParagraphStyle defaultParagraphStyle]; \
-return style. _attr_;
+#define ParagraphAttributeAtIndex(_attr_)                          \
+  NSParagraphStyle *style = [self as_paragraphStyleAtIndex:index]; \
+  if (!style) style = [NSParagraphStyle defaultParagraphStyle];    \
+  return style._attr_;
 
 - (NSTextAlignment)as_alignment {
   ParagraphAttribute(alignment);
@@ -428,18 +434,21 @@ return style. _attr_;
 }
 
 - (NSString *)as_plainTextForRange:(NSRange)range {
-  if (range.location == NSNotFound ||range.length == NSNotFound) return nil;
+  if (range.location == NSNotFound || range.length == NSNotFound) return nil;
   NSMutableString *result = [NSMutableString string];
   if (range.length == 0) return result;
   NSString *string = self.string;
-  [self enumerateAttribute:ASTextBackedStringAttributeName inRange:range options:kNilOptions usingBlock:^(id value, NSRange range, BOOL *stop) {
-    ASTextBackedString *backed = value;
-    if (backed && backed.string) {
-      [result appendString:backed.string];
-    } else {
-      [result appendString:[string substringWithRange:range]];
-    }
-  }];
+  [self enumerateAttribute:ASTextBackedStringAttributeName
+                   inRange:range
+                   options:kNilOptions
+                usingBlock:^(id value, NSRange range, BOOL *stop) {
+                  ASTextBackedString *backed = value;
+                  if (backed && backed.string) {
+                    [result appendString:backed.string];
+                  } else {
+                    [result appendString:[string substringWithRange:range]];
+                  }
+                }];
   return result;
 }
 
@@ -448,13 +457,14 @@ return style. _attr_;
                                                         width:(CGFloat)width
                                                        ascent:(CGFloat)ascent
                                                       descent:(CGFloat)descent {
-  NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:ASTextAttachmentToken];
-  
+  NSMutableAttributedString *atr =
+      [[NSMutableAttributedString alloc] initWithString:ASTextAttachmentToken];
+
   ASTextAttachment *attach = [ASTextAttachment new];
   attach.content = content;
   attach.contentMode = contentMode;
   [atr as_setTextAttachment:attach range:NSMakeRange(0, atr.length)];
-  
+
   ASTextRunDelegate *delegate = [ASTextRunDelegate new];
   delegate.width = width;
   delegate.ascent = ascent;
@@ -462,7 +472,7 @@ return style. _attr_;
   CTRunDelegateRef delegateRef = delegate.CTRunDelegate;
   [atr as_setRunDelegate:delegateRef range:NSMakeRange(0, atr.length)];
   if (delegate) CFRelease(delegateRef);
-  
+
   return atr;
 }
 
@@ -471,13 +481,14 @@ return style. _attr_;
                                                attachmentSize:(CGSize)attachmentSize
                                                   alignToFont:(UIFont *)font
                                                     alignment:(ASTextVerticalAlignment)alignment {
-  NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:ASTextAttachmentToken];
-  
+  NSMutableAttributedString *atr =
+      [[NSMutableAttributedString alloc] initWithString:ASTextAttachmentToken];
+
   ASTextAttachment *attach = [ASTextAttachment new];
   attach.content = content;
   attach.contentMode = contentMode;
   [atr as_setTextAttachment:attach range:NSMakeRange(0, atr.length)];
-  
+
   ASTextRunDelegate *delegate = [ASTextRunDelegate new];
   delegate.width = attachmentSize.width;
   switch (alignment) {
@@ -512,18 +523,18 @@ return style. _attr_;
       delegate.descent = 0;
     } break;
   }
-  
+
   CTRunDelegateRef delegateRef = delegate.CTRunDelegate;
   [atr as_setRunDelegate:delegateRef range:NSMakeRange(0, atr.length)];
   if (delegate) CFRelease(delegateRef);
-  
+
   return atr;
 }
 
 + (NSMutableAttributedString *)as_attachmentStringWithEmojiImage:(UIImage *)image
                                                         fontSize:(CGFloat)fontSize {
   if (!image || fontSize <= 0) return nil;
-  
+
   BOOL hasAnim = NO;
   if (image.images.count > 1) {
     hasAnim = YES;
@@ -532,19 +543,21 @@ return style. _attr_;
     NSNumber *frameCount = [image valueForKey:@"animatedImageFrameCount"];
     if (frameCount.intValue > 1) hasAnim = YES;
   }
-  
+
   CGFloat ascent = ASTextEmojiGetAscentWithFontSize(fontSize);
   CGFloat descent = ASTextEmojiGetDescentWithFontSize(fontSize);
   CGRect bounding = ASTextEmojiGetGlyphBoundingRectWithFontSize(fontSize);
-  
+
   ASTextRunDelegate *delegate = [ASTextRunDelegate new];
   delegate.ascent = ascent;
   delegate.descent = descent;
   delegate.width = bounding.size.width + 2 * bounding.origin.x;
-  
+
   ASTextAttachment *attachment = [ASTextAttachment new];
   attachment.contentMode = UIViewContentModeScaleAspectFit;
-  attachment.contentInsets = UIEdgeInsetsMake(ascent - (bounding.size.height + bounding.origin.y), bounding.origin.x, descent + bounding.origin.y, bounding.origin.x);
+  attachment.contentInsets =
+      UIEdgeInsetsMake(ascent - (bounding.size.height + bounding.origin.y), bounding.origin.x,
+                       descent + bounding.origin.y, bounding.origin.x);
   if (hasAnim) {
     Class imageClass = NSClassFromString(@"ASAnimatedImageView");
     if (!imageClass) imageClass = [UIImageView class];
@@ -556,13 +569,14 @@ return style. _attr_;
   } else {
     attachment.content = image;
   }
-  
-  NSMutableAttributedString *atr = [[NSMutableAttributedString alloc] initWithString:ASTextAttachmentToken];
+
+  NSMutableAttributedString *atr =
+      [[NSMutableAttributedString alloc] initWithString:ASTextAttachmentToken];
   [atr as_setTextAttachment:attachment range:NSMakeRange(0, atr.length)];
   CTRunDelegateRef ctDelegate = delegate.CTRunDelegate;
   [atr as_setRunDelegate:ctDelegate range:NSMakeRange(0, atr.length)];
   if (ctDelegate) CFRelease(ctDelegate);
-  
+
   return atr;
 }
 
@@ -573,21 +587,23 @@ return style. _attr_;
 - (BOOL)as_isSharedAttributesInAllRange {
   __block BOOL shared = YES;
   __block NSDictionary *firstAttrs = nil;
-  [self enumerateAttributesInRange:self.as_rangeOfAll options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
-    if (range.location == 0) {
-      firstAttrs = attrs;
-    } else {
-      if (firstAttrs.count != attrs.count) {
-        shared = NO;
-        *stop = YES;
-      } else if (firstAttrs) {
-        if (![firstAttrs isEqualToDictionary:attrs]) {
-          shared = NO;
-          *stop = YES;
-        }
-      }
-    }
-  }];
+  [self enumerateAttributesInRange:self.as_rangeOfAll
+                           options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                        usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+                          if (range.location == 0) {
+                            firstAttrs = attrs;
+                          } else {
+                            if (firstAttrs.count != attrs.count) {
+                              shared = NO;
+                              *stop = YES;
+                            } else if (firstAttrs) {
+                              if (![firstAttrs isEqualToDictionary:attrs]) {
+                                shared = NO;
+                                *stop = YES;
+                              }
+                            }
+                          }
+                        }];
   return shared;
 }
 
@@ -620,22 +636,35 @@ return style. _attr_;
     [failSet addObject:ASTextHighlightAttributeName];
     [failSet addObject:ASTextGlyphTransformAttributeName];
   });
-  
-#define Fail { result = NO; *stop = YES; return; }
+
+#define Fail     \
+  {              \
+    result = NO; \
+    *stop = YES; \
+    return;      \
+  }
   __block BOOL result = YES;
-  [self enumerateAttributesInRange:self.as_rangeOfAll options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
-    if (attrs.count == 0) return;
-    for (NSString *str in attrs.allKeys) {
-      if ([failSet containsObject:str]) Fail;
-    }
-    if (attrs[(id)kCTForegroundColorAttributeName] && !attrs[NSForegroundColorAttributeName]) Fail;
-    if (attrs[(id)kCTStrokeColorAttributeName] && !attrs[NSStrokeColorAttributeName]) Fail;
-    if (attrs[(id)kCTUnderlineColorAttributeName]) {
-      if (!attrs[NSUnderlineColorAttributeName]) Fail;
-    }
-    NSParagraphStyle *style = attrs[NSParagraphStyleAttributeName];
-    if (style && CFGetTypeID((__bridge CFTypeRef)(style)) == CTParagraphStyleGetTypeID()) Fail;
-  }];
+  [self enumerateAttributesInRange:self.as_rangeOfAll
+                           options:NSAttributedStringEnumerationLongestEffectiveRangeNotRequired
+                        usingBlock:^(NSDictionary *attrs, NSRange range, BOOL *stop) {
+                          if (attrs.count == 0) return;
+                          for (NSString *str in attrs.allKeys) {
+                            if ([failSet containsObject:str]) Fail;
+                          }
+                          if (attrs[(id)kCTForegroundColorAttributeName] &&
+                              !attrs[NSForegroundColorAttributeName])
+                            Fail;
+                          if (attrs[(id)kCTStrokeColorAttributeName] &&
+                              !attrs[NSStrokeColorAttributeName])
+                            Fail;
+                          if (attrs[(id)kCTUnderlineColorAttributeName]) {
+                            if (!attrs[NSUnderlineColorAttributeName]) Fail;
+                          }
+                          NSParagraphStyle *style = attrs[NSParagraphStyleAttributeName];
+                          if (style && CFGetTypeID((__bridge CFTypeRef)(style)) ==
+                                           CTParagraphStyleGetTypeID())
+                            Fail;
+                        }];
   return result;
 #undef Fail
 }
@@ -662,8 +691,10 @@ return style. _attr_;
 
 - (void)as_setAttribute:(NSString *)name value:(id)value range:(NSRange)range {
   if (!name || [NSNull isEqual:name]) return;
-  if (value && ![NSNull isEqual:value]) [self addAttribute:name value:value range:range];
-  else [self removeAttribute:name range:range];
+  if (value && ![NSNull isEqual:value])
+    [self addAttribute:name value:value range:range];
+  else
+    [self removeAttribute:name range:range];
 }
 
 - (void)as_removeAttributesInRange:(NSRange)range {
@@ -676,10 +707,10 @@ return style. _attr_;
   /*
    In iOS7 and later, UIFont is toll-free bridged to CTFontRef,
    although Apple does not mention it in documentation.
-   
+
    In iOS6, UIFont is a wrapper for CTFontRef, so CoreText can alse use UIfont,
    but UILabel/UITextView cannot use CTFontRef.
-   
+
    We use UIFont for both CoreText and UIKit.
    */
   [self as_setFont:font range:NSMakeRange(0, self.length)];
@@ -760,10 +791,10 @@ return style. _attr_;
 - (void)setAs_paragraphStyle:(NSParagraphStyle *)paragraphStyle {
   /*
    NSParagraphStyle is NOT toll-free bridged to CTParagraphStyleRef.
-   
+
    CoreText can use both NSParagraphStyle and CTParagraphStyleRef,
    but UILabel/UITextView can only use NSParagraphStyle.
-   
+
    We use NSParagraphStyle in both CoreText and UIKit.
    */
   [self as_setParagraphStyle:paragraphStyle range:NSMakeRange(0, self.length)];
@@ -904,7 +935,9 @@ return style. _attr_;
 }
 
 - (void)as_setUnderlineColor:(UIColor *)underlineColor range:(NSRange)range {
-  [self as_setAttribute:(id)kCTUnderlineColorAttributeName value:(id)underlineColor.CGColor range:range];
+  [self as_setAttribute:(id)kCTUnderlineColorAttributeName
+                  value:(id)underlineColor.CGColor
+                  range:range];
   [self as_setAttribute:NSUnderlineColorAttributeName value:underlineColor range:range];
 }
 
@@ -944,38 +977,39 @@ return style. _attr_;
 - (void)as_setParagraphStyle:(NSParagraphStyle *)paragraphStyle range:(NSRange)range {
   /*
    NSParagraphStyle is NOT toll-free bridged to CTParagraphStyleRef.
-   
+
    CoreText can use both NSParagraphStyle and CTParagraphStyleRef,
    but UILabel/UITextView can only use NSParagraphStyle.
-   
+
    We use NSParagraphStyle in both CoreText and UIKit.
    */
   [self as_setAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range];
 }
 
-#define ParagraphStyleSet(_attr_) \
-[self enumerateAttribute:NSParagraphStyleAttributeName \
-inRange:range \
-options:kNilOptions \
-usingBlock: ^(NSParagraphStyle *value, NSRange subRange, BOOL *stop) { \
-NSMutableParagraphStyle *style = nil; \
-if (value) { \
-if (CFGetTypeID((__bridge CFTypeRef)(value)) == CTParagraphStyleGetTypeID()) { \
-value = [NSParagraphStyle as_styleWithCTStyle:(__bridge CTParagraphStyleRef)(value)]; \
-} \
-if (value. _attr_ == _attr_) return; \
-if ([value isKindOfClass:[NSMutableParagraphStyle class]]) { \
-style = (id)value; \
-} else { \
-style = value.mutableCopy; \
-} \
-} else { \
-if ([NSParagraphStyle defaultParagraphStyle]. _attr_ == _attr_) return; \
-style = [NSParagraphStyle defaultParagraphStyle].mutableCopy; \
-} \
-style. _attr_ = _attr_; \
-[self as_setParagraphStyle:style range:subRange]; \
-}];
+#define ParagraphStyleSet(_attr_)                                                                  \
+  [self enumerateAttribute:NSParagraphStyleAttributeName                                           \
+                   inRange:range                                                                   \
+                   options:kNilOptions                                                             \
+                usingBlock:^(NSParagraphStyle * value, NSRange subRange, BOOL * stop) {            \
+                  NSMutableParagraphStyle *style = nil;                                            \
+                  if (value) {                                                                     \
+                    if (CFGetTypeID((__bridge CFTypeRef)(value)) == CTParagraphStyleGetTypeID()) { \
+                      value = [NSParagraphStyle                                                    \
+                          as_styleWithCTStyle:(__bridge CTParagraphStyleRef)(value)];              \
+                    }                                                                              \
+                    if (value._attr_ == _attr_) return;                                            \
+                    if ([value isKindOfClass:[NSMutableParagraphStyle class]]) {                   \
+                      style = (id)value;                                                           \
+                    } else {                                                                       \
+                      style = value.mutableCopy;                                                   \
+                    }                                                                              \
+                  } else {                                                                         \
+                    if ([NSParagraphStyle defaultParagraphStyle]._attr_ == _attr_) return;         \
+                    style = [NSParagraphStyle defaultParagraphStyle].mutableCopy;                  \
+                  }                                                                                \
+                  style._attr_ = _attr_;                                                           \
+                  [self as_setParagraphStyle:style range:subRange];                                \
+                }];
 
 - (void)as_setAlignment:(NSTextAlignment)alignment range:(NSRange)range {
   ParagraphStyleSet(alignment);
@@ -1062,15 +1096,21 @@ style. _attr_ = _attr_; \
 }
 
 - (void)as_setBaselineClass:(CFStringRef)baselineClass range:(NSRange)range {
-  [self as_setAttribute:(id)kCTBaselineClassAttributeName value:(__bridge id)baselineClass range:range];
+  [self as_setAttribute:(id)kCTBaselineClassAttributeName
+                  value:(__bridge id)baselineClass
+                  range:range];
 }
 
 - (void)as_setBaselineInfo:(CFDictionaryRef)baselineInfo range:(NSRange)range {
-  [self as_setAttribute:(id)kCTBaselineInfoAttributeName value:(__bridge id)baselineInfo range:range];
+  [self as_setAttribute:(id)kCTBaselineInfoAttributeName
+                  value:(__bridge id)baselineInfo
+                  range:range];
 }
 
 - (void)as_setBaselineReferenceInfo:(CFDictionaryRef)referenceInfo range:(NSRange)range {
-  [self as_setAttribute:(id)kCTBaselineReferenceInfoAttributeName value:(__bridge id)referenceInfo range:range];
+  [self as_setAttribute:(id)kCTBaselineReferenceInfoAttributeName
+                  value:(__bridge id)referenceInfo
+                  range:range];
 }
 
 - (void)as_setRubyAnnotation:(CTRubyAnnotationRef)ruby range:(NSRange)range {
@@ -1130,7 +1170,9 @@ style. _attr_ = _attr_; \
 }
 
 - (void)as_setTextGlyphTransform:(CGAffineTransform)textGlyphTransform range:(NSRange)range {
-  NSValue *value = CGAffineTransformIsIdentity(textGlyphTransform) ? nil : [NSValue valueWithCGAffineTransform:textGlyphTransform];
+  NSValue *value = CGAffineTransformIsIdentity(textGlyphTransform)
+                       ? nil
+                       : [NSValue valueWithCGAffineTransform:textGlyphTransform];
   [self as_setAttribute:ASTextGlyphTransformAttributeName value:value range:range];
 }
 
@@ -1194,13 +1236,11 @@ style. _attr_ = _attr_; \
   static NSArray *keys;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
-    keys = @[(id)kCTSuperscriptAttributeName,
-             (id)kCTRunDelegateAttributeName,
-             ASTextBackedStringAttributeName,
-             ASTextBindingAttributeName,
-             ASTextAttachmentAttributeName,
-             (id)kCTRubyAnnotationAttributeName,
-             NSAttachmentAttributeName];
+    keys = @[
+      (id)kCTSuperscriptAttributeName, (id)kCTRunDelegateAttributeName,
+      ASTextBackedStringAttributeName, ASTextBindingAttributeName, ASTextAttachmentAttributeName,
+      (id)kCTRubyAnnotationAttributeName, NSAttachmentAttributeName
+    ];
   });
   return keys;
 }

@@ -9,11 +9,10 @@
 
 #import <AsyncDisplayKit/ASMainSerialQueue.h>
 
-#import <AsyncDisplayKit/ASThread.h>
 #import <AsyncDisplayKit/ASInternalHelpers.h>
+#import <AsyncDisplayKit/ASThread.h>
 
-@interface ASMainSerialQueue ()
-{
+@interface ASMainSerialQueue () {
   ASDN::Mutex _serialQueueLock;
   NSMutableArray *_blocks;
 }
@@ -22,25 +21,21 @@
 
 @implementation ASMainSerialQueue
 
-- (instancetype)init
-{
+- (instancetype)init {
   if (!(self = [super init])) {
     return nil;
   }
-  
+
   _blocks = [[NSMutableArray alloc] init];
   return self;
 }
 
-- (NSUInteger)numberOfScheduledBlocks
-{
+- (NSUInteger)numberOfScheduledBlocks {
   ASDN::MutexLocker l(_serialQueueLock);
   return _blocks.count;
 }
 
-- (void)performBlockOnMainThread:(dispatch_block_t)block
-{
-
+- (void)performBlockOnMainThread:(dispatch_block_t)block {
   ASDN::UniqueLock l(_serialQueueLock);
   [_blocks addObject:block];
   {
@@ -50,8 +45,7 @@
   }
 }
 
-- (void)runBlocks
-{
+- (void)runBlocks {
   dispatch_block_t mainThread = ^{
     ASDN::UniqueLock l(self->_serialQueueLock);
     do {
@@ -69,12 +63,11 @@
       }
     } while (true);
   };
-  
+
   ASPerformBlockOnMainThread(mainThread);
 }
 
-- (NSString *)description
-{
+- (NSString *)description {
   return [[super description] stringByAppendingFormat:@" Blocks: %@", _blocks];
 }
 

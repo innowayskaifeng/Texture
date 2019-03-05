@@ -27,9 +27,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @abstract The styled text displayed by the node.
  @discussion Defaults to nil, no text is shown.
- For inline image attachments, add an attribute of key NSAttachmentAttributeName, with a value of an NSTextAttachment.
+ For inline image attachments, add an attribute of key NSAttachmentAttributeName, with a value of an
+ NSTextAttachment.
  */
-@property (nullable, copy) NSAttributedString *attributedText;
+@property(nullable, copy) NSAttributedString *attributedText;
 
 #pragma mark - Truncation
 
@@ -37,14 +38,14 @@ NS_ASSUME_NONNULL_BEGIN
  @abstract The attributedText to use when the text must be truncated.
  @discussion Defaults to a localized ellipsis character.
  */
-@property (nullable, copy) NSAttributedString *truncationAttributedText;
+@property(nullable, copy) NSAttributedString *truncationAttributedText;
 
 /**
  @summary The second attributed string appended for truncation.
  @discussion This string will be highlighted on touches.
  @default nil
  */
-@property (nullable, copy) NSAttributedString *additionalTruncationMessage;
+@property(nullable, copy) NSAttributedString *additionalTruncationMessage;
 
 /**
  @abstract Determines how the text is truncated to fit within the receiver's maximum size.
@@ -56,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @abstract If the text node is truncated. Text must have been sized first.
  */
-@property (readonly, getter=isTruncated) BOOL truncated;
+@property(readonly, getter=isTruncated) BOOL truncated;
 
 /**
  @abstract The maximum number of lines to render of the text before truncation.
@@ -67,7 +68,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @abstract The number of lines in the text. Text must have been sized first.
  */
-@property (readonly) NSUInteger lineCount;
+@property(readonly) NSUInteger lineCount;
 
 /**
  * An array of path objects representing the regions where text should not be displayed.
@@ -77,7 +78,7 @@ NS_ASSUME_NONNULL_BEGIN
  * the text node's bounds. You can use this property to have text wrap around images,
  * shapes or other text like a fancy magazine.
  */
-@property (nullable, copy) NSArray<UIBezierPath *> *exclusionPaths;
+@property(nullable, copy) NSArray<UIBezierPath *> *exclusionPaths;
 
 #pragma mark - Placeholders
 
@@ -93,7 +94,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @abstract The placeholder color.
  */
-@property (nullable, copy) UIColor *placeholderColor;
+@property(nullable, copy) UIColor *placeholderColor;
 
 /**
  @abstract Inset each line of the placeholder.
@@ -103,8 +104,9 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Shadow
 
 /**
- @abstract When you set these ASDisplayNode properties, they are composited into the bitmap instead of being applied by CA.
- 
+ @abstract When you set these ASDisplayNode properties, they are composited into the bitmap instead
+ of being applied by CA.
+
  @property (nonatomic) CGColorRef shadowColor;
  @property (nonatomic) CGFloat    shadowOpacity;
  @property (nonatomic) CGSize     shadowOffset;
@@ -117,7 +119,7 @@ NS_ASSUME_NONNULL_BEGIN
  UIEdgeInsetsRect(boundingRectForText, shadowPadding)
  will return a CGRect large enough to fit both the text and the appropriate shadow padding.
  */
-@property (nonatomic, readonly) UIEdgeInsets shadowPadding;
+@property(nonatomic, readonly) UIEdgeInsets shadowPadding;
 
 #pragma mark - Positioning
 
@@ -134,11 +136,11 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @abstract Returns an array of rects used for highlighting the characters in a given text range.
  @param textRange A range of text. Must be valid for the receiver's string.
- @discussion Use this method to detect all the different rectangles the highlights of a given range of text occupies.
- The rects returned are not guaranteed to be contiguous (for example, if the given text range spans
- a line break, the rects returned will be on opposite sides and different lines). The rects returned
- are in the coordinate system of the receiver. This method is useful for visual coordination with a
- highlighted range of text.
+ @discussion Use this method to detect all the different rectangles the highlights of a given range
+ of text occupies. The rects returned are not guaranteed to be contiguous (for example, if the given
+ text range spans a line break, the rects returned will be on opposite sides and different lines).
+ The rects returned are in the coordinate system of the receiver. This method is useful for visual
+ coordination with a highlighted range of text.
  */
 - (NSArray<NSValue *> *)highlightRectsForTextRange:(NSRange)textRange AS_WARN_UNUSED_RESULT;
 
@@ -158,13 +160,12 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (CGRect)trailingRect AS_WARN_UNUSED_RESULT;
 
-
 #pragma mark - Actions
 
 /**
  @abstract The set of attribute names to consider links.  Defaults to NSLinkAttributeName.
  */
-@property (nonatomic, copy) NSArray<NSString *> *linkAttributeNames;
+@property(nonatomic, copy) NSArray<NSString *> *linkAttributeNames;
 
 /**
  @abstract Indicates whether the receiver has an entity at a given point.
@@ -173,23 +174,26 @@ NS_ASSUME_NONNULL_BEGIN
  @param rangeOut The ultimate range of the found text. Can be NULL.
  @result YES if an entity exists at `point`; NO otherwise.
  */
-- (nullable id)linkAttributeValueAtPoint:(CGPoint)point attributeName:(out NSString * _Nullable * _Nullable)attributeNameOut range:(out NSRange * _Nullable)rangeOut AS_WARN_UNUSED_RESULT;
+- (nullable id)linkAttributeValueAtPoint:(CGPoint)point
+                           attributeName:(out NSString *_Nullable *_Nullable)attributeNameOut
+                                   range:(out NSRange *_Nullable)rangeOut AS_WARN_UNUSED_RESULT;
 
 /**
  @abstract The style to use when highlighting text.
  */
-@property (nonatomic) ASTextNodeHighlightStyle highlightStyle;
+@property(nonatomic) ASTextNodeHighlightStyle highlightStyle;
 
 /**
- @abstract The range of text highlighted by the receiver. Changes to this property are not animated by default.
+ @abstract The range of text highlighted by the receiver. Changes to this property are not animated
+ by default.
  */
-@property (nonatomic) NSRange highlightRange;
+@property(nonatomic) NSRange highlightRange;
 
 /**
  @abstract Set the range of text to highlight, with optional animation.
- 
+
  @param highlightRange The range of text to highlight.
- 
+
  @param animated Whether the text should be highlighted with an animation.
  */
 - (void)setHighlightRange:(NSRange)highlightRange animated:(BOOL)animated;
@@ -200,23 +204,23 @@ NS_ASSUME_NONNULL_BEGIN
  textNode:longPressedLinkAttribute:value:atPoint:textRange: in order for
  the long press gesture recognizer to be installed.
  */
-@property (weak) id<ASTextNodeDelegate> delegate;
+@property(weak) id<ASTextNodeDelegate> delegate;
 
 /**
  @abstract If YES and a long press is recognized, touches are cancelled. Default is NO
  */
-@property (nonatomic) BOOL longPressCancelsTouches;
+@property(nonatomic) BOOL longPressCancelsTouches;
 
 /**
  @abstract if YES will not intercept touches for non-link areas of the text. Default is NO.
  */
-@property (nonatomic) BOOL passthroughNonlinkTouches;
+@property(nonatomic) BOOL passthroughNonlinkTouches;
 
 + (void)enableDebugging;
 
 #pragma mark - Layout and Sizing
 
-@property (nullable, nonatomic) id<ASTextLinePositionModifier> textContainerLinePositionModifier;
+@property(nullable, nonatomic) id<ASTextLinePositionModifier> textContainerLinePositionModifier;
 
 @end
 
@@ -226,9 +230,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ASTextNode (Unavailable)
 #endif
 
-- (instancetype)initWithLayerBlock:(ASDisplayNodeLayerBlock)viewBlock didLoadBlock:(nullable ASDisplayNodeDidLoadBlock)didLoadBlock NS_UNAVAILABLE;
+- (instancetype)initWithLayerBlock:(ASDisplayNodeLayerBlock)viewBlock
+                      didLoadBlock:(nullable ASDisplayNodeDidLoadBlock)didLoadBlock NS_UNAVAILABLE;
 
-- (instancetype)initWithViewBlock:(ASDisplayNodeViewBlock)viewBlock didLoadBlock:(nullable ASDisplayNodeDidLoadBlock)didLoadBlock NS_UNAVAILABLE;
+- (instancetype)initWithViewBlock:(ASDisplayNodeViewBlock)viewBlock
+                     didLoadBlock:(nullable ASDisplayNodeDidLoadBlock)didLoadBlock NS_UNAVAILABLE;
 
 @end
 
@@ -238,5 +244,3 @@ NS_ASSUME_NONNULL_BEGIN
 #endif
 
 NS_ASSUME_NONNULL_END
-
-

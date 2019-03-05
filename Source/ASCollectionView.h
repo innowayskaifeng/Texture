@@ -9,9 +9,9 @@
 
 #import <UIKit/UIKit.h>
 
-#import <AsyncDisplayKit/ASCollectionViewProtocols.h>
 #import <AsyncDisplayKit/ASBaseDefines.h>
 #import <AsyncDisplayKit/ASBatchContext.h>
+#import <AsyncDisplayKit/ASCollectionViewProtocols.h>
 #import <AsyncDisplayKit/ASDimension.h>
 #import <AsyncDisplayKit/ASLayoutRangeType.h>
 #import <AsyncDisplayKit/ASScrollDirection.h>
@@ -28,7 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * Asynchronous UICollectionView with Intelligent Preloading capabilities.
  *
- * @note ASCollectionNode is strongly recommended over ASCollectionView.  This class exists for adoption convenience.
+ * @note ASCollectionNode is strongly recommended over ASCollectionView.  This class exists for
+ * adoption convenience.
  */
 @interface ASCollectionView : UICollectionView
 
@@ -37,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @return collectionNode The corresponding ASCollectionNode, if one exists.
  */
-@property (nonatomic, weak, readonly) ASCollectionNode *collectionNode;
+@property(nonatomic, weak, readonly) ASCollectionNode *collectionNode;
 
 /**
  * Retrieves the node for the item at the given index path.
@@ -69,7 +70,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @return The specified supplementary node or @c nil.
  */
-- (nullable ASCellNode *)supplementaryNodeForElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath AS_WARN_UNUSED_RESULT;
+- (nullable ASCellNode *)supplementaryNodeForElementKind:(NSString *)elementKind
+                                             atIndexPath:(NSIndexPath *)indexPath
+    AS_WARN_UNUSED_RESULT;
 
 /**
  * Retrieves the context object for the given section, as provided by the data source in
@@ -88,97 +91,126 @@ NS_ASSUME_NONNULL_BEGIN
 /*
  * A Boolean value that determines whether the nodes that the data source renders will be flipped.
  */
-@property (nonatomic) BOOL inverted ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
+@property(nonatomic)
+    BOOL inverted ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
 
 /**
- * The number of screens left to scroll before the delegate -collectionView:beginBatchFetchingWithContext: is called.
+ * The number of screens left to scroll before the delegate
+ * -collectionView:beginBatchFetchingWithContext: is called.
  *
  * Defaults to two screenfuls.
  */
-@property (nonatomic) CGFloat leadingScreensForBatching ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
+@property(nonatomic) CGFloat leadingScreensForBatching ASDISPLAYNODE_DEPRECATED_MSG(
+    "Use ASCollectionNode property instead.");
 
 /**
  * Optional introspection object for the collection view's layout.
  *
- * @discussion Since supplementary and decoration views are controlled by the collection view's layout, this object
- * is used as a bridge to provide information to the internal data controller about the existence of these views and
- * their associated index paths. For collection views using `UICollectionViewFlowLayout`, a default inspector
- * implementation `ASCollectionViewFlowLayoutInspector` is created and set on this property by default. Custom
- * collection view layout subclasses will need to provide their own implementation of an inspector object for their
- * supplementary views to be compatible with `ASCollectionView`'s supplementary node support.
+ * @discussion Since supplementary and decoration views are controlled by the collection view's
+ * layout, this object is used as a bridge to provide information to the internal data controller
+ * about the existence of these views and their associated index paths. For collection views using
+ * `UICollectionViewFlowLayout`, a default inspector implementation
+ * `ASCollectionViewFlowLayoutInspector` is created and set on this property by default. Custom
+ * collection view layout subclasses will need to provide their own implementation of an inspector
+ * object for their supplementary views to be compatible with `ASCollectionView`'s supplementary
+ * node support.
  */
-@property (nonatomic, weak) id<ASCollectionViewLayoutInspecting> layoutInspector ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
+@property(nonatomic, weak) id<ASCollectionViewLayoutInspecting> layoutInspector
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
 
 /**
  * Determines collection view's current scroll direction. Supports 2-axis collection views.
  *
  * @return a bitmask of ASScrollDirection values.
  */
-@property (nonatomic, readonly) ASScrollDirection scrollDirection ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
+@property(nonatomic, readonly) ASScrollDirection scrollDirection ASDISPLAYNODE_DEPRECATED_MSG(
+    "Use ASCollectionNode property instead.");
 
 /**
  * Determines collection view's scrollable directions.
  *
  * @return a bitmask of ASScrollDirection values.
  */
-@property (nonatomic, readonly) ASScrollDirection scrollableDirections ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
+@property(nonatomic, readonly) ASScrollDirection scrollableDirections ASDISPLAYNODE_DEPRECATED_MSG(
+    "Use ASCollectionNode property instead.");
 
 /**
  * Forces the .contentInset to be UIEdgeInsetsZero.
  *
- * @discussion By default, UIKit sets the top inset to the navigation bar height, even for horizontally
- * scrolling views.  This can only be disabled by setting a property on the containing UIViewController,
- * automaticallyAdjustsScrollViewInsets, which may not be accessible.  ASPagerNode uses this to ensure
- * its flow layout behaves predictably and does not log undefined layout warnings.
+ * @discussion By default, UIKit sets the top inset to the navigation bar height, even for
+ * horizontally scrolling views.  This can only be disabled by setting a property on the containing
+ * UIViewController, automaticallyAdjustsScrollViewInsets, which may not be accessible.  ASPagerNode
+ * uses this to ensure its flow layout behaves predictably and does not log undefined layout
+ * warnings.
  */
-@property (nonatomic) BOOL zeroContentInsets ASDISPLAYNODE_DEPRECATED_MSG("Set automaticallyAdjustsScrollViewInsets=NO on your view controller instead.");
+@property(nonatomic) BOOL zeroContentInsets ASDISPLAYNODE_DEPRECATED_MSG(
+    "Set automaticallyAdjustsScrollViewInsets=NO on your view controller instead.");
 
 /**
- * The distance that the content view is inset from the collection view edges. Defaults to UIEdgeInsetsZero.
+ * The distance that the content view is inset from the collection view edges. Defaults to
+ * UIEdgeInsetsZero.
  */
-@property (nonatomic) UIEdgeInsets contentInset ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead");
+@property(nonatomic)
+    UIEdgeInsets contentInset ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead");
 
 /**
- * The point at which the origin of the content view is offset from the origin of the collection view.
+ * The point at which the origin of the content view is offset from the origin of the collection
+ * view.
  */
-@property (nonatomic) CGPoint contentOffset ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
+@property(nonatomic)
+    CGPoint contentOffset ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
 
 /**
  * The object that acts as the asynchronous delegate of the collection view
  *
- * @discussion The delegate must adopt the ASCollectionDelegate protocol. The collection view maintains a weak reference to the delegate object.
+ * @discussion The delegate must adopt the ASCollectionDelegate protocol. The collection view
+ * maintains a weak reference to the delegate object.
  *
- * The delegate object is responsible for providing size constraints for nodes and indicating whether batch fetching should begin.
+ * The delegate object is responsible for providing size constraints for nodes and indicating
+ * whether batch fetching should begin.
  */
-@property (nonatomic, weak) id<ASCollectionDelegate> asyncDelegate ASDISPLAYNODE_DEPRECATED_MSG("Please use ASCollectionNode's .delegate property instead.");
+@property(nonatomic, weak) id<ASCollectionDelegate> asyncDelegate ASDISPLAYNODE_DEPRECATED_MSG(
+    "Please use ASCollectionNode's .delegate property instead.");
 
 /**
  * The object that acts as the asynchronous data source of the collection view
  *
- * @discussion The datasource must adopt the ASCollectionDataSource protocol. The collection view maintains a weak reference to the datasource object.
+ * @discussion The datasource must adopt the ASCollectionDataSource protocol. The collection view
+ * maintains a weak reference to the datasource object.
  *
- * The datasource object is responsible for providing nodes or node creation blocks to the collection view.
+ * The datasource object is responsible for providing nodes or node creation blocks to the
+ * collection view.
  */
-@property (nonatomic, weak) id<ASCollectionDataSource> asyncDataSource ASDISPLAYNODE_DEPRECATED_MSG("Please use ASCollectionNode's .dataSource property instead.");
+@property(nonatomic, weak) id<ASCollectionDataSource> asyncDataSource ASDISPLAYNODE_DEPRECATED_MSG(
+    "Please use ASCollectionNode's .dataSource property instead.");
 
 /**
  * Initializes an ASCollectionView
  *
- * @discussion Initializes and returns a newly allocated collection view object with the specified layout.
+ * @discussion Initializes and returns a newly allocated collection view object with the specified
+ * layout.
  *
- * @param layout The layout object to use for organizing items. The collection view stores a strong reference to the specified object. Must not be nil.
+ * @param layout The layout object to use for organizing items. The collection view stores a strong
+ * reference to the specified object. Must not be nil.
  */
-- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout ASDISPLAYNODE_DEPRECATED_MSG("Please use ASCollectionNode instead of ASCollectionView.");
+- (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout
+    ASDISPLAYNODE_DEPRECATED_MSG("Please use ASCollectionNode instead of ASCollectionView.");
 
 /**
  * Initializes an ASCollectionView
  *
- * @discussion Initializes and returns a newly allocated collection view object with the specified frame and layout.
+ * @discussion Initializes and returns a newly allocated collection view object with the specified
+ * frame and layout.
  *
- * @param frame The frame rectangle for the collection view, measured in points. The origin of the frame is relative to the superview in which you plan to add it. This frame is passed to the superclass during initialization.
- * @param layout The layout object to use for organizing items. The collection view stores a strong reference to the specified object. Must not be nil.
+ * @param frame The frame rectangle for the collection view, measured in points. The origin of the
+ * frame is relative to the superview in which you plan to add it. This frame is passed to the
+ * superclass during initialization.
+ * @param layout The layout object to use for organizing items. The collection view stores a strong
+ * reference to the specified object. Must not be nil.
  */
-- (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout ASDISPLAYNODE_DEPRECATED_MSG("Please use ASCollectionNode instead of ASCollectionView.");
+- (instancetype)initWithFrame:(CGRect)frame
+         collectionViewLayout:(UICollectionViewLayout *)layout
+    ASDISPLAYNODE_DEPRECATED_MSG("Please use ASCollectionNode instead of ASCollectionView.");
 
 /**
  * Tuning parameters for a range type in full mode.
@@ -190,7 +222,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @see ASLayoutRangeMode
  * @see ASLayoutRangeType
  */
-- (ASRangeTuningParameters)tuningParametersForRangeType:(ASLayoutRangeType)rangeType AS_WARN_UNUSED_RESULT ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (ASRangeTuningParameters)tuningParametersForRangeType:(ASLayoutRangeType)rangeType
+    AS_WARN_UNUSED_RESULT ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Set the tuning parameters for a range type in full mode.
@@ -201,7 +234,9 @@ NS_ASSUME_NONNULL_BEGIN
  * @see ASLayoutRangeMode
  * @see ASLayoutRangeType
  */
-- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters forRangeType:(ASLayoutRangeType)rangeType ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters
+               forRangeType:(ASLayoutRangeType)rangeType
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Tuning parameters for a range type in the specified mode.
@@ -214,7 +249,9 @@ NS_ASSUME_NONNULL_BEGIN
  * @see ASLayoutRangeMode
  * @see ASLayoutRangeType
  */
-- (ASRangeTuningParameters)tuningParametersForRangeMode:(ASLayoutRangeMode)rangeMode rangeType:(ASLayoutRangeType)rangeType AS_WARN_UNUSED_RESULT ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (ASRangeTuningParameters)tuningParametersForRangeMode:(ASLayoutRangeMode)rangeMode
+                                              rangeType:(ASLayoutRangeType)rangeType
+    AS_WARN_UNUSED_RESULT ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Set the tuning parameters for a range type in the specified mode.
@@ -226,49 +263,74 @@ NS_ASSUME_NONNULL_BEGIN
  * @see ASLayoutRangeMode
  * @see ASLayoutRangeType
  */
-- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters forRangeMode:(ASLayoutRangeMode)rangeMode rangeType:(ASLayoutRangeType)rangeType ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters
+               forRangeMode:(ASLayoutRangeMode)rangeMode
+                  rangeType:(ASLayoutRangeType)rangeType
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
-- (nullable __kindof UICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (nullable __kindof UICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
-- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath
+               atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                       animated:(BOOL)animated
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
-- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UICollectionViewScrollPosition)scrollPosition ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
+                     animated:(BOOL)animated
+               scrollPosition:(UICollectionViewScrollPosition)scrollPosition
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
-@property (nonatomic, copy, readonly) NSArray<NSIndexPath *> *indexPathsForVisibleItems ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
+@property(nonatomic, copy, readonly)
+    NSArray<NSIndexPath *> *indexPathsForVisibleItems ASDISPLAYNODE_DEPRECATED_MSG(
+        "Use ASCollectionNode property instead.");
 
-@property (nullable, nonatomic, copy, readonly) NSArray<NSIndexPath *> *indexPathsForSelectedItems ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode property instead.");
+@property(nullable, nonatomic, copy, readonly)
+    NSArray<NSIndexPath *> *indexPathsForSelectedItems ASDISPLAYNODE_DEPRECATED_MSG(
+        "Use ASCollectionNode property instead.");
 
 /**
- *  Perform a batch of updates asynchronously, optionally disabling all animations in the batch. This method must be called from the main thread.
- *  The asyncDataSource must be updated to reflect the changes before the update block completes.
+ *  Perform a batch of updates asynchronously, optionally disabling all animations in the batch.
+ * This method must be called from the main thread. The asyncDataSource must be updated to reflect
+ * the changes before the update block completes.
  *
  *  @param animated   NO to disable animations for this batch
- *  @param updates    The block that performs the relevant insert, delete, reload, or move operations.
- *  @param completion A completion handler block to execute when all of the operations are finished. This block takes a single
- *                    Boolean parameter that contains the value YES if all of the related animations completed successfully or
- *                    NO if they were interrupted. This parameter may be nil. If supplied, the block is run on the main thread.
+ *  @param updates    The block that performs the relevant insert, delete, reload, or move
+ * operations.
+ *  @param completion A completion handler block to execute when all of the operations are finished.
+ * This block takes a single Boolean parameter that contains the value YES if all of the related
+ * animations completed successfully or NO if they were interrupted. This parameter may be nil. If
+ * supplied, the block is run on the main thread.
  */
-- (void)performBatchAnimated:(BOOL)animated updates:(nullable AS_NOESCAPE void (^)(void))updates completion:(nullable void (^)(BOOL finished))completion ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)performBatchAnimated:(BOOL)animated
+                     updates:(nullable AS_NOESCAPE void (^)(void))updates
+                  completion:(nullable void (^)(BOOL finished))completion
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  *  Perform a batch of updates asynchronously.  This method must be called from the main thread.
  *  The asyncDataSource must be updated to reflect the changes before update block completes.
  *
- *  @param updates    The block that performs the relevant insert, delete, reload, or move operations.
- *  @param completion A completion handler block to execute when all of the operations are finished. This block takes a single
- *                    Boolean parameter that contains the value YES if all of the related animations completed successfully or
- *                    NO if they were interrupted. This parameter may be nil. If supplied, the block is run on the main thread.
+ *  @param updates    The block that performs the relevant insert, delete, reload, or move
+ * operations.
+ *  @param completion A completion handler block to execute when all of the operations are finished.
+ * This block takes a single Boolean parameter that contains the value YES if all of the related
+ * animations completed successfully or NO if they were interrupted. This parameter may be nil. If
+ * supplied, the block is run on the main thread.
  */
-- (void)performBatchUpdates:(nullable AS_NOESCAPE void (^)(void))updates completion:(nullable void (^)(BOOL finished))completion ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)performBatchUpdates:(nullable AS_NOESCAPE void (^)(void))updates
+                 completion:(nullable void (^)(BOOL finished))completion
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Reload everything from scratch, destroying the working range and all cached nodes.
  *
- * @param completion block to run on completion of asynchronous loading or nil. If supplied, the block is run on
- * the main thread.
+ * @param completion block to run on completion of asynchronous loading or nil. If supplied, the
+ * block is run on the main thread.
  * @warning This method is substantially more expensive than UICollectionView's version.
  */
-- (void)reloadDataWithCompletion:(nullable void (^)(void))completion AS_UNAVAILABLE("Use ASCollectionNode method instead.");
+- (void)reloadDataWithCompletion:(nullable void (^)(void))completion
+    AS_UNAVAILABLE("Use ASCollectionNode method instead.");
 
 /**
  * Reload everything from scratch, destroying the working range and all cached nodes.
@@ -287,57 +349,64 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * See ASCollectionNode.h for full documentation of these methods.
  */
-@property (nonatomic, readonly) BOOL isProcessingUpdates;
+@property(nonatomic, readonly) BOOL isProcessingUpdates;
 - (void)onDidFinishProcessingUpdates:(void (^)(void))completion;
-- (void)waitUntilAllUpdatesAreCommitted ASDISPLAYNODE_DEPRECATED_MSG("Use -[ASCollectionNode waitUntilAllUpdatesAreProcessed] instead.");
+- (void)waitUntilAllUpdatesAreCommitted ASDISPLAYNODE_DEPRECATED_MSG(
+    "Use -[ASCollectionNode waitUntilAllUpdatesAreProcessed] instead.");
 
 /**
  * See ASCollectionNode.h for full documentation of these methods.
  */
-@property (nonatomic, readonly, getter=isSynchronized) BOOL synchronized;
+@property(nonatomic, readonly, getter=isSynchronized) BOOL synchronized;
 - (void)onDidFinishSynchronizing:(void (^)(void))completion;
 
 /**
- * Registers the given kind of supplementary node for use in creating node-backed supplementary views.
+ * Registers the given kind of supplementary node for use in creating node-backed supplementary
+ * views.
  *
  * @param elementKind The kind of supplementary node that will be requested through the data source.
  *
- * @discussion Use this method to register support for the use of supplementary nodes in place of the default
- * `registerClass:forSupplementaryViewOfKind:withReuseIdentifier:` and `registerNib:forSupplementaryViewOfKind:withReuseIdentifier:`
- * methods. This method will register an internal backing view that will host the contents of the supplementary nodes
- * returned from the data source.
+ * @discussion Use this method to register support for the use of supplementary nodes in place of
+ * the default `registerClass:forSupplementaryViewOfKind:withReuseIdentifier:` and
+ * `registerNib:forSupplementaryViewOfKind:withReuseIdentifier:` methods. This method will register
+ * an internal backing view that will host the contents of the supplementary nodes returned from the
+ * data source.
  */
-- (void)registerSupplementaryNodeOfKind:(NSString *)elementKind ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)registerSupplementaryNodeOfKind:(NSString *)elementKind
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Inserts one or more sections.
  *
  * @param sections An index set that specifies the sections to insert.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
-- (void)insertSections:(NSIndexSet *)sections ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)insertSections:(NSIndexSet *)sections
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Deletes one or more sections.
  *
  * @param sections An index set that specifies the sections to delete.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
-- (void)deleteSections:(NSIndexSet *)sections ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)deleteSections:(NSIndexSet *)sections
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Reloads the specified sections.
  *
  * @param sections An index set that specifies the sections to reload.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
-- (void)reloadSections:(NSIndexSet *)sections ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)reloadSections:(NSIndexSet *)sections
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Moves a section to a new location.
@@ -346,40 +415,46 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param newSection The index that is the destination of the move for the section.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
-- (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)moveSection:(NSInteger)section
+          toSection:(NSInteger)newSection
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Inserts items at the locations identified by an array of index paths.
  *
- * @param indexPaths An array of NSIndexPath objects, each representing an item index and section index that together identify an item.
+ * @param indexPaths An array of NSIndexPath objects, each representing an item index and section
+ * index that together identify an item.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
-- (void)insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Deletes the items specified by an array of index paths.
  *
  * @param indexPaths An array of NSIndexPath objects identifying the items to delete.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
-- (void)deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Reloads the specified items.
  *
  * @param indexPaths An array of NSIndexPath objects identifying the items to reload.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
-- (void)reloadItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)reloadItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Moves the item at a specified location to a destination location.
@@ -388,28 +463,35 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param newIndexPath The index path that is the destination of the move for the item.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
-- (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)moveItemAtIndexPath:(NSIndexPath *)indexPath
+                toIndexPath:(NSIndexPath *)newIndexPath
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 /**
  * Query the sized node at @c indexPath for its calculatedSize.
  *
  * @param indexPath The index path for the node of interest.
  *
- * This method is deprecated. Call @c calculatedSize on the node of interest instead. First deprecated in version 2.0.
+ * This method is deprecated. Call @c calculatedSize on the node of interest instead. First
+ * deprecated in version 2.0.
  */
-- (CGSize)calculatedSizeForNodeAtIndexPath:(NSIndexPath *)indexPath ASDISPLAYNODE_DEPRECATED_MSG("Call -calculatedSize on the node of interest instead.");
+- (CGSize)calculatedSizeForNodeAtIndexPath:(NSIndexPath *)indexPath
+    ASDISPLAYNODE_DEPRECATED_MSG("Call -calculatedSize on the node of interest instead.");
 
 /**
  * Similar to -visibleCells.
  *
  * @return an array containing the nodes being displayed on screen.
  */
-- (NSArray<__kindof ASCellNode *> *)visibleNodes AS_WARN_UNUSED_RESULT ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (NSArray<__kindof ASCellNode *> *)visibleNodes AS_WARN_UNUSED_RESULT
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
-- (void)setContentOffset:(CGPoint)contentOffset animated:(BOOL)animated ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
+- (void)setContentOffset:(CGPoint)contentOffset
+                animated:(BOOL)animated
+    ASDISPLAYNODE_DEPRECATED_MSG("Use ASCollectionNode method instead.");
 
 @end
 
@@ -422,7 +504,8 @@ ASDISPLAYNODE_DEPRECATED_MSG("Renamed to ASCollectionDelegate.")
 @end
 
 /**
- * Defines methods that let you coordinate a `UICollectionViewFlowLayout` in combination with an `ASCollectionNode`.
+ * Defines methods that let you coordinate a `UICollectionViewFlowLayout` in combination with an
+ * `ASCollectionNode`.
  */
 @protocol ASCollectionDelegateFlowLayout <ASCollectionDelegate>
 
@@ -431,57 +514,75 @@ ASDISPLAYNODE_DEPRECATED_MSG("Renamed to ASCollectionDelegate.")
 /**
  * Asks the delegate for the inset that should be applied to the given section.
  *
- * @see the same method in UICollectionViewDelegate. 
+ * @see the same method in UICollectionViewDelegate.
  */
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section;
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView
+                        layout:(UICollectionViewLayout *)collectionViewLayout
+        insetForSectionAtIndex:(NSInteger)section;
 
 /**
- * Asks the delegate for the size range that should be used to measure the header in the given flow layout section.
+ * Asks the delegate for the size range that should be used to measure the header in the given flow
+ * layout section.
  *
  * @param collectionNode The sender.
  * @param section The section.
  *
- * @return The size range for the header, or @c ASSizeRangeZero if there is no header in this section.
+ * @return The size range for the header, or @c ASSizeRangeZero if there is no header in this
+ * section.
  *
  * If you want the header to completely determine its own size, return @c ASSizeRangeUnconstrained.
  *
  * @note Only the scrollable dimension of the returned size range will be used. In a vertical flow,
- * only the height will be used. In a horizontal flow, only the width will be used. The other dimension
- * will be constrained to fill the collection node.
+ * only the height will be used. In a horizontal flow, only the width will be used. The other
+ * dimension will be constrained to fill the collection node.
  *
- * @discussion If you do not implement this method, ASDK will fall back to calling @c collectionView:layout:referenceSizeForHeaderInSection:
- * and using that as the exact constrained size. If you don't implement that method, ASDK will read the @c headerReferenceSize from the layout.
+ * @discussion If you do not implement this method, ASDK will fall back to calling @c
+ * collectionView:layout:referenceSizeForHeaderInSection: and using that as the exact constrained
+ * size. If you don't implement that method, ASDK will read the @c headerReferenceSize from the
+ * layout.
  */
-- (ASSizeRange)collectionNode:(ASCollectionNode *)collectionNode sizeRangeForHeaderInSection:(NSInteger)section;
+- (ASSizeRange)collectionNode:(ASCollectionNode *)collectionNode
+    sizeRangeForHeaderInSection:(NSInteger)section;
 
 /**
- * Asks the delegate for the size range that should be used to measure the footer in the given flow layout section.
+ * Asks the delegate for the size range that should be used to measure the footer in the given flow
+ * layout section.
  *
  * @param collectionNode The sender.
  * @param section The section.
  *
- * @return The size range for the footer, or @c ASSizeRangeZero if there is no footer in this section.
+ * @return The size range for the footer, or @c ASSizeRangeZero if there is no footer in this
+ * section.
  *
  * If you want the footer to completely determine its own size, return @c ASSizeRangeUnconstrained.
  *
  * @note Only the scrollable dimension of the returned size range will be used. In a vertical flow,
- * only the height will be used. In a horizontal flow, only the width will be used. The other dimension
- * will be constrained to fill the collection node.
+ * only the height will be used. In a horizontal flow, only the width will be used. The other
+ * dimension will be constrained to fill the collection node.
  *
- * @discussion If you do not implement this method, ASDK will fall back to calling @c collectionView:layout:referenceSizeForFooterInSection:
- * and using that as the exact constrained size. If you don't implement that method, ASDK will read the @c footerReferenceSize from the layout.
+ * @discussion If you do not implement this method, ASDK will fall back to calling @c
+ * collectionView:layout:referenceSizeForFooterInSection: and using that as the exact constrained
+ * size. If you don't implement that method, ASDK will read the @c footerReferenceSize from the
+ * layout.
  */
-- (ASSizeRange)collectionNode:(ASCollectionNode *)collectionNode sizeRangeForFooterInSection:(NSInteger)section;
+- (ASSizeRange)collectionNode:(ASCollectionNode *)collectionNode
+    sizeRangeForFooterInSection:(NSInteger)section;
 
 /**
  * Asks the delegate for the size of the header in the specified section.
  */
-- (CGSize)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section ASDISPLAYNODE_DEPRECATED_MSG("Implement collectionNode:sizeRangeForHeaderInSection: instead.");
+- (CGSize)collectionView:(ASCollectionView *)collectionView
+                             layout:(UICollectionViewLayout *)collectionViewLayout
+    referenceSizeForHeaderInSection:(NSInteger)section
+    ASDISPLAYNODE_DEPRECATED_MSG("Implement collectionNode:sizeRangeForHeaderInSection: instead.");
 
 /**
  * Asks the delegate for the size of the footer in the specified section.
  */
-- (CGSize)collectionView:(ASCollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section ASDISPLAYNODE_DEPRECATED_MSG("Implement collectionNode:sizeRangeForFooterInSection: instead.");
+- (CGSize)collectionView:(ASCollectionView *)collectionView
+                             layout:(UICollectionViewLayout *)collectionViewLayout
+    referenceSizeForFooterInSection:(NSInteger)section
+    ASDISPLAYNODE_DEPRECATED_MSG("Implement collectionNode:sizeRangeForFooterInSection: instead.");
 
 @end
 

@@ -11,12 +11,12 @@
 
 #import <cmath>
 
-// TODO rewrite these to be closer to the intended use -- take UIViewContentMode as param, CGRect destinationBounds, CGSize sourceSize.
+// TODO rewrite these to be closer to the intended use -- take UIViewContentMode as param, CGRect
+// destinationBounds, CGSize sourceSize.
 static CGSize _ASSizeFillWithAspectRatio(CGFloat aspectRatio, CGSize constraints);
 static CGSize _ASSizeFitWithAspectRatio(CGFloat aspectRatio, CGSize constraints);
 
-static CGSize _ASSizeFillWithAspectRatio(CGFloat sizeToScaleAspectRatio, CGSize destinationSize)
-{
+static CGSize _ASSizeFillWithAspectRatio(CGFloat sizeToScaleAspectRatio, CGSize destinationSize) {
   CGFloat destinationAspectRatio = destinationSize.width / destinationSize.height;
   if (sizeToScaleAspectRatio > destinationAspectRatio) {
     return CGSizeMake(destinationSize.height * sizeToScaleAspectRatio, destinationSize.height);
@@ -25,8 +25,7 @@ static CGSize _ASSizeFillWithAspectRatio(CGFloat sizeToScaleAspectRatio, CGSize 
   }
 }
 
-static CGSize _ASSizeFitWithAspectRatio(CGFloat aspectRatio, CGSize constraints)
-{
+static CGSize _ASSizeFitWithAspectRatio(CGFloat aspectRatio, CGSize constraints) {
   CGFloat constraintAspectRatio = constraints.width / constraints.height;
   if (aspectRatio > constraintAspectRatio) {
     return CGSizeMake(constraints.width, constraints.width / aspectRatio);
@@ -42,22 +41,21 @@ void ASCroppedImageBackingSizeAndDrawRectInBounds(CGSize sourceImageSize,
                                                   BOOL forceUpscaling,
                                                   CGSize forcedSize,
                                                   CGSize *outBackingSize,
-                                                  CGRect *outDrawRect
-                                                  )
-{
-
+                                                  CGRect *outDrawRect) {
   size_t destinationWidth = boundsSize.width;
   size_t destinationHeight = boundsSize.height;
 
   // Often, an image is too low resolution to completely fill the width and height provided.
-  // Per the API contract as commented in the header, we will adjust input parameters (destinationWidth, destinationHeight) to ensure that the image is not upscaled on the CPU.
+  // Per the API contract as commented in the header, we will adjust input parameters
+  // (destinationWidth, destinationHeight) to ensure that the image is not upscaled on the CPU.
   CGFloat boundsAspectRatio = (CGFloat)destinationWidth / (CGFloat)destinationHeight;
 
   CGSize scaledSizeForImage = sourceImageSize;
   BOOL cropToRectDimensions = !CGRectIsEmpty(cropRect);
 
   if (cropToRectDimensions) {
-    scaledSizeForImage = CGSizeMake(boundsSize.width / cropRect.size.width, boundsSize.height / cropRect.size.height);
+    scaledSizeForImage = CGSizeMake(boundsSize.width / cropRect.size.width,
+                                    boundsSize.height / cropRect.size.height);
   } else {
     if (contentMode == UIViewContentModeScaleAspectFill)
       scaledSizeForImage = _ASSizeFillWithAspectRatio(boundsAspectRatio, sourceImageSize);
@@ -65,12 +63,14 @@ void ASCroppedImageBackingSizeAndDrawRectInBounds(CGSize sourceImageSize,
       scaledSizeForImage = _ASSizeFitWithAspectRatio(boundsAspectRatio, sourceImageSize);
   }
 
-  // If fitting the desired aspect ratio to the image size actually results in a larger buffer, use the input values.
-  // However, if there is a pixel savings (e.g. we would have to upscale the image), override the function arguments.
+  // If fitting the desired aspect ratio to the image size actually results in a larger buffer, use
+  // the input values. However, if there is a pixel savings (e.g. we would have to upscale the
+  // image), override the function arguments.
   if (CGSizeEqualToSize(CGSizeZero, forcedSize) == NO) {
     destinationWidth = (size_t)round(forcedSize.width);
     destinationHeight = (size_t)round(forcedSize.height);
-  } else if (forceUpscaling == NO && (scaledSizeForImage.width * scaledSizeForImage.height) < (destinationWidth * destinationHeight)) {
+  } else if (forceUpscaling == NO && (scaledSizeForImage.width * scaledSizeForImage.height) <
+                                         (destinationWidth * destinationHeight)) {
     destinationWidth = (size_t)round(scaledSizeForImage.width);
     destinationHeight = (size_t)round(scaledSizeForImage.height);
     if (destinationWidth == 0 || destinationHeight == 0) {
@@ -85,12 +85,15 @@ void ASCroppedImageBackingSizeAndDrawRectInBounds(CGSize sourceImageSize,
   CGSize scaledSizeForDestination = CGSizeMake(destinationWidth, destinationHeight);
 
   if (cropToRectDimensions) {
-    scaledSizeForDestination = CGSizeMake(boundsSize.width / cropRect.size.width, boundsSize.height / cropRect.size.height);
+    scaledSizeForDestination = CGSizeMake(boundsSize.width / cropRect.size.width,
+                                          boundsSize.height / cropRect.size.height);
   } else {
     if (contentMode == UIViewContentModeScaleAspectFill)
-      scaledSizeForDestination = _ASSizeFillWithAspectRatio(sourceImageAspectRatio, scaledSizeForDestination);
+      scaledSizeForDestination =
+          _ASSizeFillWithAspectRatio(sourceImageAspectRatio, scaledSizeForDestination);
     else if (contentMode == UIViewContentModeScaleAspectFit)
-      scaledSizeForDestination = _ASSizeFitWithAspectRatio(sourceImageAspectRatio, scaledSizeForDestination);
+      scaledSizeForDestination =
+          _ASSizeFitWithAspectRatio(sourceImageAspectRatio, scaledSizeForDestination);
   }
 
   // Figure out the rectangle into which to draw the image.
@@ -98,23 +101,21 @@ void ASCroppedImageBackingSizeAndDrawRectInBounds(CGSize sourceImageSize,
   if (cropToRectDimensions) {
     drawRect = CGRectMake(-cropRect.origin.x * scaledSizeForDestination.width,
                           -cropRect.origin.y * scaledSizeForDestination.height,
-                          scaledSizeForDestination.width,
-                          scaledSizeForDestination.height);
+                          scaledSizeForDestination.width, scaledSizeForDestination.height);
   } else {
     // We want to obey the origin of cropRect in aspect-fill mode.
     if (contentMode == UIViewContentModeScaleAspectFill) {
-      drawRect = CGRectMake(((destinationWidth - scaledSizeForDestination.width) * cropRect.origin.x),
-                            ((destinationHeight - scaledSizeForDestination.height) * cropRect.origin.y),
-                            scaledSizeForDestination.width,
-                            scaledSizeForDestination.height);
+      drawRect =
+          CGRectMake(((destinationWidth - scaledSizeForDestination.width) * cropRect.origin.x),
+                     ((destinationHeight - scaledSizeForDestination.height) * cropRect.origin.y),
+                     scaledSizeForDestination.width, scaledSizeForDestination.height);
 
     }
     // And otherwise just center it.
     else {
       drawRect = CGRectMake(((destinationWidth - scaledSizeForDestination.width) / 2.0),
                             ((destinationHeight - scaledSizeForDestination.height) / 2.0),
-                            scaledSizeForDestination.width,
-                            scaledSizeForDestination.height);
+                            scaledSizeForDestination.width, scaledSizeForDestination.height);
     }
   }
 

@@ -42,7 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
  *  |  ASTextNode  ASTextNode  ASTextNode  |
  *  ----------------------------------------
  */
-+ (NSString *)horizontalBoxStringForChildren:(NSArray<NSString *> *)children parent:(NSString *)parent;
++ (NSString *)horizontalBoxStringForChildren:(NSArray<NSString *> *)children
+                                      parent:(NSString *)parent;
 
 /**
  *  Renders an ascii art box with the children aligned vertically.
@@ -53,7 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
  *   |     ASTextNode    |
  *   ---------------------
  */
-+ (NSString *)verticalBoxStringForChildren:(NSArray<NSString *> *)children parent:(NSString *)parent;
++ (NSString *)verticalBoxStringForChildren:(NSArray<NSString *> *)children
+                                    parent:(NSString *)parent;
 
 @end
 

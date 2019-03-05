@@ -13,20 +13,19 @@
 
 #pragma mark - Convenience Methods
 
-- (void)attributeTextInRange:(NSRange)range withTextKitMinimumLineHeight:(CGFloat)minimumLineHeight
-{
+- (void)attributeTextInRange:(NSRange)range
+    withTextKitMinimumLineHeight:(CGFloat)minimumLineHeight {
   if (range.length) {
-
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setMinimumLineHeight:minimumLineHeight];
     [self attributeTextInRange:range withTextKitParagraphStyle:style];
   }
 }
 
-- (void)attributeTextInRange:(NSRange)range withTextKitMinimumLineHeight:(CGFloat)minimumLineHeight maximumLineHeight:(CGFloat)maximumLineHeight
-{
+- (void)attributeTextInRange:(NSRange)range
+    withTextKitMinimumLineHeight:(CGFloat)minimumLineHeight
+               maximumLineHeight:(CGFloat)maximumLineHeight {
   if (range.length) {
-
     NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
     [style setMinimumLineHeight:minimumLineHeight];
     [style setMaximumLineHeight:maximumLineHeight];
@@ -34,13 +33,14 @@
   }
 }
 
-- (void)attributeTextInRange:(NSRange)range withTextKitLineHeight:(CGFloat)lineHeight
-{
-  [self attributeTextInRange:range withTextKitMinimumLineHeight:lineHeight maximumLineHeight:lineHeight];
+- (void)attributeTextInRange:(NSRange)range withTextKitLineHeight:(CGFloat)lineHeight {
+  [self attributeTextInRange:range
+      withTextKitMinimumLineHeight:lineHeight
+                 maximumLineHeight:lineHeight];
 }
 
-- (void)attributeTextInRange:(NSRange)range withTextKitParagraphStyle:(NSParagraphStyle *)paragraphStyle
-{
+- (void)attributeTextInRange:(NSRange)range
+    withTextKitParagraphStyle:(NSParagraphStyle *)paragraphStyle {
   if (range.length) {
     [self addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:range];
   }

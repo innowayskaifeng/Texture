@@ -15,8 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Ratio layout spec
- For when the content should respect a certain inherent ratio but can be scaled (think photos or videos)
- The ratio passed is the ratio of height / width you expect
+ For when the content should respect a certain inherent ratio but can be scaled (think photos or
+ videos) The ratio passed is the ratio of height / width you expect
 
  For a ratio 0.5, the spec will have a flat rectangle shape
   _ _ _ _
@@ -33,9 +33,11 @@ NS_ASSUME_NONNULL_BEGIN
  **/
 @interface ASRatioLayoutSpec : ASLayoutSpec
 
-@property (nonatomic) CGFloat ratio;
+@property(nonatomic) CGFloat ratio;
 
-+ (instancetype)ratioLayoutSpecWithRatio:(CGFloat)ratio child:(id<ASLayoutElement>)child NS_RETURNS_RETAINED AS_WARN_UNUSED_RESULT;
++ (instancetype)ratioLayoutSpecWithRatio:(CGFloat)ratio
+                                   child:(id<ASLayoutElement>)child NS_RETURNS_RETAINED
+    AS_WARN_UNUSED_RESULT;
 
 @end
 

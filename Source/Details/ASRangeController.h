@@ -7,13 +7,13 @@
 //  Licensed under Apache 2.0: http://www.apache.org/licenses/LICENSE-2.0
 //
 
-#import <Foundation/Foundation.h>
-#import <AsyncDisplayKit/ASDisplayNode.h>
-#import <AsyncDisplayKit/ASDataController.h>
 #import <AsyncDisplayKit/ASAbstractLayoutController.h>
+#import <AsyncDisplayKit/ASBaseDefines.h>
+#import <AsyncDisplayKit/ASDataController.h>
+#import <AsyncDisplayKit/ASDisplayNode.h>
 #import <AsyncDisplayKit/ASLayoutRangeType.h>
 #import <AsyncDisplayKit/ASRangeControllerUpdateRangeProtocol+Beta.h>
-#import <AsyncDisplayKit/ASBaseDefines.h>
+#import <Foundation/Foundation.h>
 
 #define ASRangeControllerLoggingEnabled 0
 
@@ -28,22 +28,23 @@ NS_ASSUME_NONNULL_BEGIN
  * Working range controller.
  *
  * Used internally by ASTableView and ASCollectionView.  It is paired with ASDataController.
- * It is designed to support custom scrolling containers as well.  Observes the visible range, maintains
- * "working ranges" to trigger network calls and rendering, and is responsible for driving asynchronous layout of cells.
- * This includes cancelling those asynchronous operations as cells fall outside of the working ranges.
+ * It is designed to support custom scrolling containers as well.  Observes the visible range,
+ * maintains "working ranges" to trigger network calls and rendering, and is responsible for driving
+ * asynchronous layout of cells. This includes cancelling those asynchronous operations as cells
+ * fall outside of the working ranges.
  */
 AS_SUBCLASSING_RESTRICTED
-@interface ASRangeController : NSObject <ASDataControllerDelegate>
-{
-  id<ASLayoutController>                  _layoutController;
-  __weak id<ASRangeControllerDataSource>  _dataSource;
-  __weak id<ASRangeControllerDelegate>    _delegate;
+@interface ASRangeController : NSObject <ASDataControllerDelegate> {
+  id<ASLayoutController> _layoutController;
+  __weak id<ASRangeControllerDataSource> _dataSource;
+  __weak id<ASRangeControllerDelegate> _delegate;
 }
 
 /**
  * Notify the range controller that the visible range has been updated.
- * This is the primary input call that drives updating the working ranges, and triggering their actions.
- * The ranges will be updated in the next turn of the main loop, or when -updateIfNeeded is called.
+ * This is the primary input call that drives updating the working ranges, and triggering their
+ * actions. The ranges will be updated in the next turn of the main loop, or when -updateIfNeeded is
+ * called.
  *
  * @see [ASRangeControllerDelegate rangeControllerVisibleNodeIndexPaths:]
  */
@@ -70,9 +71,12 @@ AS_SUBCLASSING_RESTRICTED
  */
 - (void)configureContentView:(UIView *)contentView forCellNode:(ASCellNode *)node;
 
-- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters forRangeMode:(ASLayoutRangeMode)rangeMode rangeType:(ASLayoutRangeType)rangeType;
+- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters
+               forRangeMode:(ASLayoutRangeMode)rangeMode
+                  rangeType:(ASLayoutRangeType)rangeType;
 
-- (ASRangeTuningParameters)tuningParametersForRangeMode:(ASLayoutRangeMode)rangeMode rangeType:(ASLayoutRangeType)rangeType;
+- (ASRangeTuningParameters)tuningParametersForRangeMode:(ASLayoutRangeMode)rangeMode
+                                              rangeType:(ASLayoutRangeType)rangeType;
 
 // These methods call the corresponding method on each node, visiting each one that
 // the range controller has set a non-default interface state on.
@@ -80,35 +84,36 @@ AS_SUBCLASSING_RESTRICTED
 - (void)clearPreloadedData;
 
 /**
- * An object that describes the layout behavior of the ranged component (table view, collection view, etc.)
+ * An object that describes the layout behavior of the ranged component (table view, collection
+ * view, etc.)
  *
  * Used primarily for providing the current range of index paths and identifying when the
  * range controller should invalidate its range.
  */
-@property (nonatomic) id<ASLayoutController> layoutController;
+@property(nonatomic) id<ASLayoutController> layoutController;
 
 /**
  * The underlying data source for the range controller
  */
-@property (nonatomic, weak) id<ASRangeControllerDataSource> dataSource;
+@property(nonatomic, weak) id<ASRangeControllerDataSource> dataSource;
 
 /**
  * Delegate for handling range controller events. Must not be nil.
  */
-@property (nonatomic, weak) id<ASRangeControllerDelegate> delegate;
+@property(nonatomic, weak) id<ASRangeControllerDelegate> delegate;
 
 /**
- * Property that indicates whether the scroll view for this range controller has ever changed its contentOffset.
+ * Property that indicates whether the scroll view for this range controller has ever changed its
+ * contentOffset.
  */
-@property (nonatomic) BOOL contentHasBeenScrolled;
+@property(nonatomic) BOOL contentHasBeenScrolled;
 
 @end
-
 
 /**
  * Data source for ASRangeController.
  *
- * Allows the range controller to perform external queries on the range. 
+ * Allows the range controller to perform external queries on the range.
  * Ex. range nodes, visible index paths, and viewport size.
  */
 @protocol ASRangeControllerDataSource <NSObject>
@@ -116,9 +121,11 @@ AS_SUBCLASSING_RESTRICTED
 /**
  * @param rangeController Sender.
  *
- * @return an table of elements corresponding to the data currently visible onscreen (i.e., the visible range).
+ * @return an table of elements corresponding to the data currently visible onscreen (i.e., the
+ * visible range).
  */
-- (nullable NSHashTable<ASCollectionElement *> *)visibleElementsForRangeController:(ASRangeController *)rangeController;
+- (nullable NSHashTable<ASCollectionElement *> *)visibleElementsForRangeController:
+    (ASRangeController *)rangeController;
 
 /**
  * @param rangeController Sender.
@@ -130,9 +137,10 @@ AS_SUBCLASSING_RESTRICTED
 /**
  * @param rangeController Sender.
  *
- * @return the ASInterfaceState of the node that this controller is powering.  This allows nested range controllers
- * to collaborate with one another, as an outer controller may set bits in .interfaceState such as Visible.
- * If this controller is an orthogonally scrolling element, it waits until it is visible to preload outside the viewport.
+ * @return the ASInterfaceState of the node that this controller is powering.  This allows nested
+ * range controllers to collaborate with one another, as an outer controller may set bits in
+ * .interfaceState such as Visible. If this controller is an orthogonally scrolling element, it
+ * waits until it is visible to preload outside the viewport.
  */
 - (ASInterfaceState)interfaceStateForRangeController:(ASRangeController *)rangeController;
 
@@ -154,30 +162,38 @@ AS_SUBCLASSING_RESTRICTED
  *
  * @param updates The block that performs relevant data updates.
  *
- * @discussion The updates block must always be executed or the data controller will get into a bad state.
- * It should be called at the time the backing view is ready to process the updates,
- * i.e inside the updates block of `-[UICollectionView performBatchUpdates:completion:] or after calling `-[UITableView beginUpdates]`.
+ * @discussion The updates block must always be executed or the data controller will get into a bad
+ * state. It should be called at the time the backing view is ready to process the updates, i.e
+ * inside the updates block of `-[UICollectionView performBatchUpdates:completion:] or after calling
+ * `-[UITableView beginUpdates]`.
  */
-- (void)rangeController:(ASRangeController *)rangeController updateWithChangeSet:(_ASHierarchyChangeSet *)changeSet updates:(dispatch_block_t)updates;
+- (void)rangeController:(ASRangeController *)rangeController
+    updateWithChangeSet:(_ASHierarchyChangeSet *)changeSet
+                updates:(dispatch_block_t)updates;
 
 - (BOOL)rangeControllerShouldUpdateRanges:(ASRangeController *)rangeController;
 
 @end
 
-@interface ASRangeController (ASRangeControllerUpdateRangeProtocol) <ASRangeControllerUpdateRangeProtocol>
+@interface ASRangeController (ASRangeControllerUpdateRangeProtocol) <
+    ASRangeControllerUpdateRangeProtocol>
 
 /**
- * Update the range mode for a range controller to a explicitly set mode until the node that contains the range
+ * Update the range mode for a range controller to a explicitly set mode until the node that
+ contains the range
  * controller becomes visible again
  *
  * Logic for the automatic range mode:
- * 1. If there are no visible node paths available nothing is to be done and no range update will happen
+ * 1. If there are no visible node paths available nothing is to be done and no range update will
+ happen
  * 2. The initial range update if the range controller is visible always will be
  *    ASLayoutRangeModeMinimum as it's the initial fetch
- * 3. The range mode set explicitly via updateCurrentRangeWithMode: will last at least one range update. After that it
- the range controller will use the explicit set range mode until it becomes visible and a new range update was
- triggered or a new range mode via updateCurrentRangeWithMode: is set
- * 4. If range mode is not explicitly set the range mode is variying based if the range controller is visible or not
+ * 3. The range mode set explicitly via updateCurrentRangeWithMode: will last at least one range
+ update. After that it the range controller will use the explicit set range mode until it becomes
+ visible and a new range update was triggered or a new range mode via updateCurrentRangeWithMode: is
+ set
+ * 4. If range mode is not explicitly set the range mode is variying based if the range controller
+ is visible or not
  */
 - (void)updateCurrentRangeWithMode:(ASLayoutRangeMode)rangeMode;
 

@@ -17,21 +17,26 @@ NS_ASSUME_NONNULL_BEGIN
 @class ASRangeController;
 
 @interface ASCollectionView ()
-- (instancetype)_initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout layoutFacilitator:(nullable id<ASCollectionViewLayoutFacilitatorProtocol>)layoutFacilitator owningNode:(nullable ASCollectionNode *)owningNode eventLog:(nullable ASEventLog *)eventLog;
+- (instancetype)_initWithFrame:(CGRect)frame
+          collectionViewLayout:(UICollectionViewLayout *)layout
+             layoutFacilitator:
+                 (nullable id<ASCollectionViewLayoutFacilitatorProtocol>)layoutFacilitator
+                    owningNode:(nullable ASCollectionNode *)owningNode
+                      eventLog:(nullable ASEventLog *)eventLog;
 
-@property (nonatomic, weak) ASCollectionNode *collectionNode;
-@property (nonatomic, readonly) ASDataController *dataController;
-@property (nonatomic, readonly) ASRangeController *rangeController;
+@property(nonatomic, weak) ASCollectionNode *collectionNode;
+@property(nonatomic, readonly) ASDataController *dataController;
+@property(nonatomic, readonly) ASRangeController *rangeController;
 
 /**
  * The change set that we're currently building, if any.
  */
-@property (nonatomic, nullable, readonly) _ASHierarchyChangeSet *changeSet;
+@property(nonatomic, nullable, readonly) _ASHierarchyChangeSet *changeSet;
 
 /**
  * @see ASCollectionNode+Beta.h for full documentation.
  */
-@property (nonatomic) ASCellLayoutMode cellLayoutMode;
+@property(nonatomic) ASCellLayoutMode cellLayoutMode;
 
 /**
  * Attempt to get the view-layer index path for the item with the given index path.
@@ -39,7 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @param indexPath The index path of the item.
  * @param wait If the item hasn't reached the view yet, this attempts to wait for updates to commit.
  */
-- (nullable NSIndexPath *)convertIndexPathFromCollectionNode:(NSIndexPath *)indexPath waitingIfNeeded:(BOOL)wait;
+- (nullable NSIndexPath *)convertIndexPathFromCollectionNode:(NSIndexPath *)indexPath
+                                             waitingIfNeeded:(BOOL)wait;
 
 /**
  * Attempt to get the node index path given the view-layer index path.
@@ -53,7 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param indexPaths An array of index paths in the view space
  */
-- (nullable NSArray<NSIndexPath *> *)convertIndexPathsToCollectionNode:(nullable NSArray<NSIndexPath *> *)indexPaths;
+- (nullable NSArray<NSIndexPath *> *)convertIndexPathsToCollectionNode:
+    (nullable NSArray<NSIndexPath *> *)indexPaths;
 
 - (void)beginUpdates;
 

@@ -8,9 +8,9 @@
 //
 
 #import <AsyncDisplayKit/ASEventLog.h>
+#import <AsyncDisplayKit/ASObjectDescriptionHelpers.h>
 #import <AsyncDisplayKit/ASThread.h>
 #import <AsyncDisplayKit/ASTraceEvent.h>
-#import <AsyncDisplayKit/ASObjectDescriptionHelpers.h>
 
 @implementation ASEventLog {
   ASDN::RecursiveMutex __instanceLock__;
@@ -26,8 +26,7 @@
  * Even just when debugging, all these events can take up considerable memory.
  * Store them in a shared NSCache to limit the total consumption.
  */
-+ (NSCache<ASEventLog *, NSMutableArray<ASTraceEvent *> *> *)contentsCache
-{
++ (NSCache<ASEventLog *, NSMutableArray<ASTraceEvent *> *> *)contentsCache {
   static NSCache *cache;
   static dispatch_once_t onceToken;
   dispatch_once(&onceToken, ^{
@@ -36,8 +35,7 @@
   return cache;
 }
 
-- (instancetype)initWithObject:(id)anObject
-{
+- (instancetype)initWithObject:(id)anObject {
   if ((self = [super init])) {
     _objectDescription = ASObjectDescriptionMakeTiny(anObject);
     _eventLogHead = -1;
@@ -45,15 +43,13 @@
   return self;
 }
 
-- (instancetype)init
-{
+- (instancetype)init {
   // This method is marked unavailable so the compiler won't let them call it.
   ASDisplayNodeFailAssert(@"Failed to call initWithObject:");
   return nil;
 }
 
-- (void)logEventWithBacktrace:(NSArray<NSString *> *)backtrace format:(NSString *)format, ...
-{
+- (void)logEventWithBacktrace:(NSArray<NSString *> *)backtrace format:(NSString *)format, ... {
   va_list args;
   va_start(args, format);
   ASTraceEvent *event = [[ASTraceEvent alloc] initWithBacktrace:backtrace
@@ -80,8 +76,7 @@
   }
 }
 
-- (NSArray<ASTraceEvent *> *)events
-{
+- (NSArray<ASTraceEvent *> *)events {
   NSMutableArray<ASTraceEvent *> *events = [[ASEventLog contentsCache] objectForKey:self];
   if (events == nil) {
     return nil;
@@ -90,9 +85,9 @@
   ASDN::MutexLocker l(__instanceLock__);
   NSUInteger tail = (_eventLogHead + 1);
   NSUInteger count = events.count;
-  
+
   NSMutableArray<ASTraceEvent *> *result = [NSMutableArray array];
-  
+
   // Start from `tail` and go through array, wrapping around when we exceed end index.
   for (NSUInteger actualIndex = 0; actualIndex < ASEVENTLOG_CAPACITY; actualIndex++) {
     NSInteger ringIndex = (tail + actualIndex) % ASEVENTLOG_CAPACITY;
@@ -103,8 +98,7 @@
   return result;
 }
 
-- (NSString *)description
-{
+- (NSString *)description {
   /**
    * This description intentionally doesn't follow the standard description format.
    * Since this is a log, it's important for the description to look a certain way, and
@@ -112,7 +106,8 @@
    */
   NSArray *events = [self events];
   if (events == nil) {
-    return [NSString stringWithFormat:@"Event log for %@ was purged to conserve memory.", _objectDescription];
+    return [NSString
+        stringWithFormat:@"Event log for %@ was purged to conserve memory.", _objectDescription];
   } else {
     return [NSString stringWithFormat:@"Event log for %@. Events: %@", _objectDescription, events];
   }

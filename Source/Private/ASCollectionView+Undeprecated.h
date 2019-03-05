@@ -23,53 +23,63 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  * The object that acts as the asynchronous delegate of the collection view
  *
- * @discussion The delegate must adopt the ASCollectionDelegate protocol. The collection view maintains a weak reference to the delegate object.
+ * @discussion The delegate must adopt the ASCollectionDelegate protocol. The collection view
+ * maintains a weak reference to the delegate object.
  *
- * The delegate object is responsible for providing size constraints for nodes and indicating whether batch fetching should begin.
+ * The delegate object is responsible for providing size constraints for nodes and indicating
+ * whether batch fetching should begin.
  */
-@property (nonatomic, weak) id<ASCollectionDelegate> asyncDelegate;
+@property(nonatomic, weak) id<ASCollectionDelegate> asyncDelegate;
 
 /**
  * The object that acts as the asynchronous data source of the collection view
  *
- * @discussion The datasource must adopt the ASCollectionDataSource protocol. The collection view maintains a weak reference to the datasource object.
+ * @discussion The datasource must adopt the ASCollectionDataSource protocol. The collection view
+ * maintains a weak reference to the datasource object.
  *
- * The datasource object is responsible for providing nodes or node creation blocks to the collection view.
+ * The datasource object is responsible for providing nodes or node creation blocks to the
+ * collection view.
  */
-@property (nonatomic, weak) id<ASCollectionDataSource> asyncDataSource;
+@property(nonatomic, weak) id<ASCollectionDataSource> asyncDataSource;
 
 /**
  * Initializes an ASCollectionView
  *
- * @discussion Initializes and returns a newly allocated collection view object with the specified layout.
+ * @discussion Initializes and returns a newly allocated collection view object with the specified
+ * layout.
  *
- * @param layout The layout object to use for organizing items. The collection view stores a strong reference to the specified object. Must not be nil.
+ * @param layout The layout object to use for organizing items. The collection view stores a strong
+ * reference to the specified object. Must not be nil.
  */
 - (instancetype)initWithCollectionViewLayout:(UICollectionViewLayout *)layout;
 
 /**
  * Initializes an ASCollectionView
  *
- * @discussion Initializes and returns a newly allocated collection view object with the specified frame and layout.
+ * @discussion Initializes and returns a newly allocated collection view object with the specified
+ * frame and layout.
  *
- * @param frame The frame rectangle for the collection view, measured in points. The origin of the frame is relative to the superview in which you plan to add it. This frame is passed to the superclass during initialization.
- * @param layout The layout object to use for organizing items. The collection view stores a strong reference to the specified object. Must not be nil.
+ * @param frame The frame rectangle for the collection view, measured in points. The origin of the
+ * frame is relative to the superview in which you plan to add it. This frame is passed to the
+ * superclass during initialization.
+ * @param layout The layout object to use for organizing items. The collection view stores a strong
+ * reference to the specified object. Must not be nil.
  */
 - (instancetype)initWithFrame:(CGRect)frame collectionViewLayout:(UICollectionViewLayout *)layout;
 
-@property (nonatomic) CGFloat leadingScreensForBatching;
+@property(nonatomic) CGFloat leadingScreensForBatching;
 
-@property (nonatomic) BOOL inverted;
+@property(nonatomic) BOOL inverted;
 
-@property (nonatomic, readonly) ASScrollDirection scrollDirection;
+@property(nonatomic, readonly) ASScrollDirection scrollDirection;
 
-@property (nonatomic, readonly) ASScrollDirection scrollableDirections;
+@property(nonatomic, readonly) ASScrollDirection scrollableDirections;
 
-@property (nonatomic, weak) id<ASCollectionViewLayoutInspecting> layoutInspector;
+@property(nonatomic, weak) id<ASCollectionViewLayoutInspecting> layoutInspector;
 
-@property (nonatomic) UIEdgeInsets contentInset;
+@property(nonatomic) UIEdgeInsets contentInset;
 
-@property (nonatomic) CGPoint contentOffset;
+@property(nonatomic) CGPoint contentOffset;
 
 /**
  * Tuning parameters for a range type in full mode.
@@ -81,7 +91,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @see ASLayoutRangeMode
  * @see ASLayoutRangeType
  */
-- (ASRangeTuningParameters)tuningParametersForRangeType:(ASLayoutRangeType)rangeType AS_WARN_UNUSED_RESULT;
+- (ASRangeTuningParameters)tuningParametersForRangeType:(ASLayoutRangeType)rangeType
+    AS_WARN_UNUSED_RESULT;
 
 /**
  * Set the tuning parameters for a range type in full mode.
@@ -92,7 +103,8 @@ NS_ASSUME_NONNULL_BEGIN
  * @see ASLayoutRangeMode
  * @see ASLayoutRangeType
  */
-- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters forRangeType:(ASLayoutRangeType)rangeType;
+- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters
+               forRangeType:(ASLayoutRangeType)rangeType;
 
 /**
  * Tuning parameters for a range type in the specified mode.
@@ -105,7 +117,9 @@ NS_ASSUME_NONNULL_BEGIN
  * @see ASLayoutRangeMode
  * @see ASLayoutRangeType
  */
-- (ASRangeTuningParameters)tuningParametersForRangeMode:(ASLayoutRangeMode)rangeMode rangeType:(ASLayoutRangeType)rangeType AS_WARN_UNUSED_RESULT;
+- (ASRangeTuningParameters)tuningParametersForRangeMode:(ASLayoutRangeMode)rangeMode
+                                              rangeType:(ASLayoutRangeType)rangeType
+    AS_WARN_UNUSED_RESULT;
 
 /**
  * Set the tuning parameters for a range type in the specified mode.
@@ -117,13 +131,15 @@ NS_ASSUME_NONNULL_BEGIN
  * @see ASLayoutRangeMode
  * @see ASLayoutRangeType
  */
-- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters forRangeMode:(ASLayoutRangeMode)rangeMode rangeType:(ASLayoutRangeType)rangeType;
+- (void)setTuningParameters:(ASRangeTuningParameters)tuningParameters
+               forRangeMode:(ASLayoutRangeMode)rangeMode
+                  rangeType:(ASLayoutRangeType)rangeType;
 
 - (nullable __kindof UICollectionViewCell *)cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 
-@property (nonatomic, readonly) NSArray<NSIndexPath *> *indexPathsForVisibleItems;
+@property(nonatomic, readonly) NSArray<NSIndexPath *> *indexPathsForVisibleItems;
 
-@property (nonatomic, readonly, nullable) NSArray<NSIndexPath *> *indexPathsForSelectedItems;
+@property(nonatomic, readonly, nullable) NSArray<NSIndexPath *> *indexPathsForSelectedItems;
 
 /**
  * Scrolls the collection to the given item.
@@ -132,32 +148,44 @@ NS_ASSUME_NONNULL_BEGIN
  * @param scrollPosition Where the row should end up after the scroll.
  * @param animated Whether the scroll should be animated or not.
  */
-- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated;
+- (void)scrollToItemAtIndexPath:(NSIndexPath *)indexPath
+               atScrollPosition:(UICollectionViewScrollPosition)scrollPosition
+                       animated:(BOOL)animated;
 
-- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UICollectionViewScrollPosition)scrollPosition;
+- (void)selectItemAtIndexPath:(NSIndexPath *)indexPath
+                     animated:(BOOL)animated
+               scrollPosition:(UICollectionViewScrollPosition)scrollPosition;
 
 /**
- *  Perform a batch of updates asynchronously, optionally disabling all animations in the batch. This method must be called from the main thread.
- *  The asyncDataSource must be updated to reflect the changes before the update block completes.
+ *  Perform a batch of updates asynchronously, optionally disabling all animations in the batch.
+ * This method must be called from the main thread. The asyncDataSource must be updated to reflect
+ * the changes before the update block completes.
  *
  *  @param animated   NO to disable animations for this batch
- *  @param updates    The block that performs the relevant insert, delete, reload, or move operations.
- *  @param completion A completion handler block to execute when all of the operations are finished. This block takes a single
- *                    Boolean parameter that contains the value YES if all of the related animations completed successfully or
- *                    NO if they were interrupted. This parameter may be nil. If supplied, the block is run on the main thread.
+ *  @param updates    The block that performs the relevant insert, delete, reload, or move
+ * operations.
+ *  @param completion A completion handler block to execute when all of the operations are finished.
+ * This block takes a single Boolean parameter that contains the value YES if all of the related
+ * animations completed successfully or NO if they were interrupted. This parameter may be nil. If
+ * supplied, the block is run on the main thread.
  */
-- (void)performBatchAnimated:(BOOL)animated updates:(nullable AS_NOESCAPE void (^)(void))updates completion:(nullable void (^)(BOOL finished))completion;
+- (void)performBatchAnimated:(BOOL)animated
+                     updates:(nullable AS_NOESCAPE void (^)(void))updates
+                  completion:(nullable void (^)(BOOL finished))completion;
 
 /**
  *  Perform a batch of updates asynchronously.  This method must be called from the main thread.
  *  The asyncDataSource must be updated to reflect the changes before update block completes.
  *
- *  @param updates    The block that performs the relevant insert, delete, reload, or move operations.
- *  @param completion A completion handler block to execute when all of the operations are finished. This block takes a single
- *                    Boolean parameter that contains the value YES if all of the related animations completed successfully or
- *                    NO if they were interrupted. This parameter may be nil. If supplied, the block is run on the main thread.
+ *  @param updates    The block that performs the relevant insert, delete, reload, or move
+ * operations.
+ *  @param completion A completion handler block to execute when all of the operations are finished.
+ * This block takes a single Boolean parameter that contains the value YES if all of the related
+ * animations completed successfully or NO if they were interrupted. This parameter may be nil. If
+ * supplied, the block is run on the main thread.
  */
-- (void)performBatchUpdates:(nullable AS_NOESCAPE void (^)(void))updates completion:(nullable void (^)(BOOL finished))completion;
+- (void)performBatchUpdates:(nullable AS_NOESCAPE void (^)(void))updates
+                 completion:(nullable void (^)(BOOL finished))completion;
 
 /**
  * Triggers a relayout of all nodes.
@@ -167,19 +195,22 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)relayoutItems;
 
 /**
- *  Blocks execution of the main thread until all section and row updates are committed. This method must be called from the main thread.
+ *  Blocks execution of the main thread until all section and row updates are committed. This method
+ * must be called from the main thread.
  */
 - (void)waitUntilAllUpdatesAreCommitted;
 
 /**
- * Registers the given kind of supplementary node for use in creating node-backed supplementary views.
+ * Registers the given kind of supplementary node for use in creating node-backed supplementary
+ * views.
  *
  * @param elementKind The kind of supplementary node that will be requested through the data source.
  *
- * @discussion Use this method to register support for the use of supplementary nodes in place of the default
- * `registerClass:forSupplementaryViewOfKind:withReuseIdentifier:` and `registerNib:forSupplementaryViewOfKind:withReuseIdentifier:`
- * methods. This method will register an internal backing view that will host the contents of the supplementary nodes
- * returned from the data source.
+ * @discussion Use this method to register support for the use of supplementary nodes in place of
+ * the default `registerClass:forSupplementaryViewOfKind:withReuseIdentifier:` and
+ * `registerNib:forSupplementaryViewOfKind:withReuseIdentifier:` methods. This method will register
+ * an internal backing view that will host the contents of the supplementary nodes returned from the
+ * data source.
  */
 - (void)registerSupplementaryNodeOfKind:(NSString *)elementKind;
 
@@ -188,8 +219,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param sections An index set that specifies the sections to insert.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
 - (void)insertSections:(NSIndexSet *)sections;
 
@@ -198,8 +229,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param sections An index set that specifies the sections to delete.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
 - (void)deleteSections:(NSIndexSet *)sections;
 
@@ -208,8 +239,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param sections An index set that specifies the sections to reload.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
 - (void)reloadSections:(NSIndexSet *)sections;
 
@@ -220,18 +251,19 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param newSection The index that is the destination of the move for the section.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
 - (void)moveSection:(NSInteger)section toSection:(NSInteger)newSection;
 
 /**
  * Inserts items at the locations identified by an array of index paths.
  *
- * @param indexPaths An array of NSIndexPath objects, each representing an item index and section index that together identify an item.
+ * @param indexPaths An array of NSIndexPath objects, each representing an item index and section
+ * index that together identify an item.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
 - (void)insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths;
 
@@ -240,8 +272,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param indexPaths An array of NSIndexPath objects identifying the items to delete.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
 - (void)deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths;
 
@@ -250,8 +282,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param indexPaths An array of NSIndexPath objects identifying the items to reload.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
 - (void)reloadItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths;
 
@@ -262,8 +294,8 @@ NS_ASSUME_NONNULL_BEGIN
  *
  * @param newIndexPath The index path that is the destination of the move for the item.
  *
- * @discussion This method must be called from the main thread. The asyncDataSource must be updated to reflect the changes
- * before this method is called.
+ * @discussion This method must be called from the main thread. The asyncDataSource must be updated
+ * to reflect the changes before this method is called.
  */
 - (void)moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath;
 
@@ -289,7 +321,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSIndexPath *)indexPathForNode:(ASCellNode *)cellNode AS_WARN_UNUSED_RESULT;
 
 /**
- *  Invalidates and recalculates the cached sizes stored for pass-through cells used in interop mode.
+ *  Invalidates and recalculates the cached sizes stored for pass-through cells used in interop
+ * mode.
  */
 - (void)invalidateFlowLayoutDelegateMetrics;
 

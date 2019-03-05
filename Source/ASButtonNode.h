@@ -26,9 +26,9 @@ typedef NS_ENUM(NSInteger, ASButtonNodeImageAlignment) {
 
 @interface ASButtonNode : ASControlNode
 
-@property (readonly) ASTextNode  * titleNode;
-@property (readonly) ASImageNode * imageNode;
-@property (readonly) ASImageNode * backgroundImageNode;
+@property(readonly) ASTextNode *titleNode;
+@property(readonly) ASImageNode *imageNode;
+@property(readonly) ASImageNode *backgroundImageNode;
 
 /**
  Spacing between image and title. Defaults to 8.0.
@@ -36,8 +36,8 @@ typedef NS_ENUM(NSInteger, ASButtonNodeImageAlignment) {
 @property CGFloat contentSpacing;
 
 /**
- Whether button should be laid out vertically (image on top of text) or horizontally (image to the left of text).
- ASButton node does not yet support RTL but it should be fairly easy to implement.
+ Whether button should be laid out vertically (image on top of text) or horizontally (image to the
+ left of text). ASButton node does not yet support RTL but it should be fairly easy to implement.
  Defaults to YES.
  */
 @property BOOL laysOutHorizontally;
@@ -58,7 +58,8 @@ typedef NS_ENUM(NSInteger, ASButtonNodeImageAlignment) {
 @property UIEdgeInsets contentEdgeInsets;
 
 /**
- * @discusstion Whether the image should be aligned at the beginning or at the end of node. Default is `ASButtonNodeImageAlignmentBeginning`.
+ * @discusstion Whether the image should be aligned at the beginning or at the end of node. Default
+ * is `ASButtonNodeImageAlignmentBeginning`.
  */
 @property ASButtonNodeImageAlignment imageAlignment;
 
@@ -69,10 +70,12 @@ typedef NS_ENUM(NSInteger, ASButtonNodeImageAlignment) {
  *
  *  @return The title for the specified state.
  */
-- (nullable NSAttributedString *)attributedTitleForState:(UIControlState)state AS_WARN_UNUSED_RESULT;
+- (nullable NSAttributedString *)attributedTitleForState:(UIControlState)state
+    AS_WARN_UNUSED_RESULT;
 
 /**
- *  Sets the styled title to use for the specified state. This will reset styled title previously set with -setTitle:withFont:withColor:forState.
+ *  Sets the styled title to use for the specified state. This will reset styled title previously
+ * set with -setTitle:withFont:withColor:forState.
  *
  *  @param title The styled text string to use for the title.
  *  @param state The control state that uses the specified title.
@@ -81,14 +84,18 @@ typedef NS_ENUM(NSInteger, ASButtonNodeImageAlignment) {
 
 #if TARGET_OS_IOS
 /**
- *  Sets the title to use for the specified state. This will reset styled title previously set with -setAttributedTitle:forState.
+ *  Sets the title to use for the specified state. This will reset styled title previously set with
+ * -setAttributedTitle:forState.
  *
  *  @param title The styled text string to use for the title.
  *  @param font The font to use for the title.
  *  @param color The color to use for the title.
  *  @param state The control state that uses the specified title.
  */
-- (void)setTitle:(NSString *)title withFont:(nullable UIFont *)font withColor:(nullable UIColor *)color forState:(UIControlState)state;
+- (void)setTitle:(NSString *)title
+        withFont:(nullable UIFont *)font
+       withColor:(nullable UIColor *)color
+        forState:(UIControlState)state;
 #endif
 /**
  *  Returns the image used for a button state.
@@ -114,7 +121,6 @@ typedef NS_ENUM(NSInteger, ASButtonNodeImageAlignment) {
  *  @param state The control state that uses the specified title.
  */
 - (void)setBackgroundImage:(nullable UIImage *)image forState:(UIControlState)state;
-
 
 /**
  *  Returns the background image used for a button state.

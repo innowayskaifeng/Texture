@@ -16,7 +16,8 @@
 #import <AsyncDisplayKit/ASBaseDefines.h>
 
 /**
- * @abstract an immutable class for calculating shadow padding drawing a shadowed background for text
+ * @abstract an immutable class for calculating shadow padding drawing a shadowed background for
+ * text
  */
 AS_SUBCLASSING_RESTRICTED
 @interface ASTextKitShadower : NSObject
@@ -31,25 +32,25 @@ AS_SUBCLASSING_RESTRICTED
  * @discussion A positive width will move the shadow to the right.
  *             A positive height will move the shadow downwards.
  */
-@property (nonatomic, readonly) CGSize shadowOffset;
+@property(nonatomic, readonly) CGSize shadowOffset;
 
 //! CGColor in which the shadow is drawn
-@property (nonatomic, copy, readonly) UIColor *shadowColor;
+@property(nonatomic, copy, readonly) UIColor *shadowColor;
 
 //! Alpha of the shadow
-@property (nonatomic, readonly) CGFloat shadowOpacity;
+@property(nonatomic, readonly) CGFloat shadowOpacity;
 
 //! Radius, in pixels
-@property (nonatomic, readonly) CGFloat shadowRadius;
+@property(nonatomic, readonly) CGFloat shadowRadius;
 
 /**
  * @abstract The edge insets which represent shadow padding
  * @discussion Each edge inset is less than or equal to zero.
  *
  * Example:
- *  CGRect boundsWithoutShadowPadding; // Large enough to fit text, not large enough to fit the shadow as well
- *  UIEdgeInsets shadowPadding = [shadower shadowPadding];
- *  CGRect boundsWithShadowPadding = UIEdgeInsetsRect(boundsWithoutShadowPadding, shadowPadding);
+ *  CGRect boundsWithoutShadowPadding; // Large enough to fit text, not large enough to fit the
+ * shadow as well UIEdgeInsets shadowPadding = [shadower shadowPadding]; CGRect
+ * boundsWithShadowPadding = UIEdgeInsetsRect(boundsWithoutShadowPadding, shadowPadding);
  */
 - (UIEdgeInsets)shadowPadding;
 
