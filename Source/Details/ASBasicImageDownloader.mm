@@ -15,6 +15,7 @@
 #import <AsyncDisplayKit/ASImageContainerProtocolCategories.h>
 #import <AsyncDisplayKit/ASThread.h>
 
+using AS::MutexLocker;
 
 #pragma mark -
 /**
@@ -28,7 +29,7 @@ NSString * const kASBasicImageDownloaderContextCompletionBlock = @"kASBasicImage
 @interface ASBasicImageDownloaderContext ()
 {
   BOOL _invalid;
-  ASDN::RecursiveMutex __instanceLock__;
+  AS::RecursiveMutex __instanceLock__;
 }
 
 @property (nonatomic) NSMutableArray *callbackDatas;
@@ -39,19 +40,19 @@ NSString * const kASBasicImageDownloaderContextCompletionBlock = @"kASBasicImage
 
 static NSMutableDictionary *currentRequests = nil;
 
-+ (ASDN::Mutex *)currentRequestLock
++ (AS::Mutex *)currentRequestLock
 {
   static dispatch_once_t onceToken;
-  static ASDN::Mutex *currentRequestsLock;
+  static AS::Mutex *currentRequestsLock;
   dispatch_once(&onceToken, ^{
-    currentRequestsLock = new ASDN::Mutex();
+    currentRequestsLock = new AS::Mutex();
   });
   return currentRequestsLock;
 }
 
 + (ASBasicImageDownloaderContext *)contextForURL:(NSURL *)URL
 {
-  ASDN::MutexLocker l(*self.currentRequestLock);
+  MutexLocker l(*self.currentRequestLock);
   if (!currentRequests) {
     currentRequests = [[NSMutableDictionary alloc] init];
   }
@@ -65,7 +66,7 @@ static NSMutableDictionary *currentRequests = nil;
 
 + (void)cancelContextWithURL:(NSURL *)URL
 {
-  ASDN::MutexLocker l(*self.currentRequestLock);
+  MutexLocker l(*self.currentRequestLock);
   if (currentRequests) {
     [currentRequests removeObjectForKey:URL];
   }
@@ -82,7 +83,7 @@ static NSMutableDictionary *currentRequests = nil;
 
 - (void)cancel
 {
-  ASDN::MutexLocker l(__instanceLock__);
+  MutexLocker l(__instanceLock__);
 
   NSURLSessionTask *sessionTask = self.sessionTask;
   if (sessionTask) {
@@ -96,19 +97,19 @@ static NSMutableDictionary *currentRequests = nil;
 
 - (BOOL)isCancelled
 {
-  ASDN::MutexLocker l(__instanceLock__);
+  MutexLocker l(__instanceLock__);
   return _invalid;
 }
 
 - (void)addCallbackData:(NSDictionary *)callbackData
 {
-  ASDN::MutexLocker l(__instanceLock__);
+  MutexLocker l(__instanceLock__);
   [self.callbackDatas addObject:callbackData];
 }
 
 - (void)performProgressBlocks:(CGFloat)progress
 {
-  ASDN::MutexLocker l(__instanceLock__);
+  MutexLocker l(__instanceLock__);
   for (NSDictionary *callbackData in self.callbackDatas) {
     ASImageDownloaderProgress progressBlock = callbackData[kASBasicImageDownloaderContextProgressBlock];
     dispatch_queue_t callbackQueue = callbackData[kASBasicImageDownloaderContextCallbackQueue];
@@ -123,7 +124,7 @@ static NSMutableDictionary *currentRequests = nil;
 
 - (void)completeWithImage:(UIImage *)image error:(NSError *)error
 {
-  ASDN::MutexLocker l(__instanceLock__);
+  MutexLocker l(__instanceLock__);
   for (NSDictionary *callbackData in self.callbackDatas) {
     ASImageDownloaderCompletion completionBlock = callbackData[kASBasicImageDownloaderContextCompletionBlock];
     dispatch_queue_t callbackQueue = callbackData[kASBasicImageDownloaderContextCallbackQueue];
@@ -141,7 +142,7 @@ static NSMutableDictionary *currentRequests = nil;
 
 - (NSURLSessionTask *)createSessionTaskIfNecessaryWithBlock:(NSURLSessionTask *(^)())creationBlock {
   {
-    ASDN::MutexLocker l(__instanceLock__);
+    MutexLocker l(__instanceLock__);
 
     if (self.isCancelled) {
       return nil;
@@ -155,7 +156,7 @@ static NSMutableDictionary *currentRequests = nil;
   NSURLSessionTask *newTask = creationBlock();
 
   {
-    ASDN::MutexLocker l(__instanceLock__);
+    MutexLocker l(__instanceLock__);
 
     if (self.isCancelled) {
       return nil;

@@ -22,6 +22,8 @@
 #define ASRunLoopQueueLoggingEnabled 0
 #define ASRunLoopQueueVerboseLoggingEnabled 0
 
+using AS::MutexLocker;
+
 static void runLoopSourceCallback(void *info) {
   // No-op
 #if ASRunLoopQueueVerboseLoggingEnabled
@@ -33,7 +35,7 @@ static void runLoopSourceCallback(void *info) {
 
 @implementation ASDeallocQueue {
   std::vector<CFTypeRef> _queue;
-  ASDN::Mutex _lock;
+  AS::Mutex _lock;
 }
 
 + (ASDeallocQueue *)sharedDeallocationQueue NS_RETURNS_RETAINED
@@ -111,7 +113,7 @@ static void runLoopSourceCallback(void *info) {
   CFRunLoopSourceRef _runLoopSource;
   CFRunLoopObserverRef _runLoopObserver;
   NSPointerArray *_internalQueue; // Use NSPointerArray so we can decide __strong or __weak per-instance.
-  ASDN::RecursiveMutex _internalQueueLock;
+  AS::RecursiveMutex _internalQueueLock;
 
   // In order to not pollute the top-level activities, each queue has 1 root activity.
   os_activity_t _rootActivity;
@@ -205,7 +207,7 @@ static void runLoopSourceCallback(void *info) {
 
   BOOL isQueueDrained = NO;
   {
-    ASDN::MutexLocker l(_internalQueueLock);
+    MutexLocker l(_internalQueueLock);
 
     NSInteger internalQueueCount = _internalQueue.count;
     // Early-exit if the queue is empty.
@@ -285,7 +287,7 @@ static void runLoopSourceCallback(void *info) {
     return;
   }
   
-  ASDN::MutexLocker l(_internalQueueLock);
+  MutexLocker l(_internalQueueLock);
 
   // Check if the object exists.
   BOOL foundObject = NO;
@@ -309,7 +311,7 @@ static void runLoopSourceCallback(void *info) {
 
 - (BOOL)isEmpty
 {
-  ASDN::MutexLocker l(_internalQueueLock);
+  MutexLocker l(_internalQueueLock);
   return _internalQueue.count == 0;
 }
 
@@ -324,7 +326,7 @@ ASSynthesizeLockingMethodsWithMutex(_internalQueueLock)
   CFRunLoopSourceRef _runLoopSource;
   CFRunLoopObserverRef _preTransactionObserver;
   NSPointerArray *_internalQueue;
-  ASDN::RecursiveMutex _internalQueueLock;
+  AS::RecursiveMutex _internalQueueLock;
 
   // In order to not pollute the top-level activities, each queue has 1 root activity.
   os_activity_t _rootActivity;
@@ -425,7 +427,7 @@ static int const kASASCATransactionQueueOrder = 1000000;
   std::vector<id> itemsToProcess;
 
   {
-    ASDN::MutexLocker l(_internalQueueLock);
+    MutexLocker l(_internalQueueLock);
 
     NSInteger internalQueueCount = _internalQueue.count;
     // Early-exit if the queue is empty.
@@ -488,7 +490,7 @@ static int const kASASCATransactionQueueOrder = 1000000;
     return;
   }
 
-  ASDN::MutexLocker l(_internalQueueLock);
+  MutexLocker l(_internalQueueLock);
 
   // Check if the object exists.
   BOOL foundObject = NO;
@@ -510,7 +512,7 @@ static int const kASASCATransactionQueueOrder = 1000000;
 
 - (BOOL)isEmpty
 {
-  ASDN::MutexLocker l(_internalQueueLock);
+  MutexLocker l(_internalQueueLock);
   return _internalQueue.count == 0;
 }
 
